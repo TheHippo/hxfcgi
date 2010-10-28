@@ -1,0 +1,5 @@
+-cp test
+-cp lib
+-D HXFGCI
+-main Test
+-cpp bin
