@@ -33,13 +33,29 @@ value hxfcgi_add_header(value hreq,value type,value value) {
 value hxfcgi_print(value hreq,value msg) {
 	val_check(msg,string);
 	hxfcgi::Request *req = get_request(hreq);
-	if (! req->headerSent()) {
-		req->printHeaders();
-	}
 	req->print(val_string(msg));
 	return val_null;
+}
+
+value hxfcgi_cache_module(value func) {
+	val_check_function(func,1);
+	hxfcgi::Request *req;
+	while (true) {
+		try {
+			req = new hxfcgi::Request();
+			val_call1(func,alloc_abstract(hxRequest,req));
+			delete req;
+		}
+		catch (string error) {
+			hx_failure(error.c_str());
+			break;
+		}
+	}
+	return val_null;
+	
 }
 
 DEFINE_PRIM(hxfcgi_create_request,0);
 DEFINE_PRIM(hxfcgi_add_header,3);
 DEFINE_PRIM(hxfcgi_print,2);
+DEFINE_PRIM(hxfcgi_cache_module,1);

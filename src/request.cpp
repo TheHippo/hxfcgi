@@ -14,7 +14,7 @@ namespace hxfcgi {
 	}
 	
 	bool Request::headerSent() {
-		return headerSent();
+		return header_sent;
 	}
 	
 	void Request::printHeaders() {
@@ -23,14 +23,16 @@ namespace hxfcgi {
 			printf("%s: %s\r\n",iter->first.c_str(),iter->second.c_str());
 		}
 		printf("\r\n");
+		header_sent = true;
 	}
 	
 	void Request::addHeader(string type,string value) {
-		
-	}
+		header[type]=value;
+	}	
 	
 	void Request::print(string msg) {
+		if (header_sent==false)
+			printHeaders();
 		printf("%s",msg.c_str());
 	}
-	
 }
