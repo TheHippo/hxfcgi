@@ -22,7 +22,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  */
-package cpp;
+package neko;
 
 /**
 	This class is used for accessing the local Web server and the current
@@ -96,7 +96,7 @@ class Web {
 		already been sent so this will raise an exception.
 	**/
 	public static function setHeader( h : String, v : String ) {
-		Web.hxfcgi_addHeader(Web.request,h,v);
+		Web.hxfcgi_addHeader(Web.request,Lib.haxeToNeko(h),Lib.haxeToNeko(v));
 	}
 
 	/**
