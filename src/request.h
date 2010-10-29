@@ -1,5 +1,7 @@
-#include "header.h"
+#include <map>
+#include <string>
 
+using namespace std;
 
 namespace hxfcgi {
 	
@@ -7,13 +9,13 @@ namespace hxfcgi {
 		public:
 			Request();
 			bool headerSent();
+			void printHeaders();
+			void addHeader(string type,string value);
+			void print(string msg);
 		
 		private:
-			Header *header;
-			bool header_sent;
-		
-		
+			map<string,string> header;
+			bool header_sent;		
 	};
-	
 	
 }
