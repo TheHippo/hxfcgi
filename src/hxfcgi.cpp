@@ -1,6 +1,7 @@
 #define IMPLEMENT_API
 #include <hx/CFFI.h>
 #include "request.h"
+#include "basic.h"
 
 DEFINE_KIND(hxRequest);
 
@@ -55,6 +56,21 @@ value hxfcgi_cache_module(value func) {
 	
 }
 
+value hxfcgi_get_client_ip(value hreq) {
+	val_check_kind(hreq,hxRequest);
+	hxfcgi::BasicData d;
+	return alloc_string(d.getClientIP());
+}
+
+
+value hxfcgi_get_uri(value hreq) {
+	val_check_kind(hreq,hxRequest);	
+	hxfcgi::BasicData d;
+	return alloc_string(d.getURI());
+}
+
+DEFINE_PRIM(hxfcgi_get_client_ip,1);
+DEFINE_PRIM(hxfcgi_get_uri,1);
 DEFINE_PRIM(hxfcgi_create_request,0);
 DEFINE_PRIM(hxfcgi_add_header,3);
 DEFINE_PRIM(hxfcgi_print,2);

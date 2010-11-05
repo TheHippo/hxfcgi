@@ -21,6 +21,8 @@ class Test {
 		Lib.println("Foo:");
 		Lib.println(id++);
 		trace("foO");
+		trace(Web.getClientIP());
+		trace(Web.getURI());
 
 	}
 	

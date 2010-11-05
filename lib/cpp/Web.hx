@@ -36,12 +36,14 @@ class Web {
 	static var hxfcgi_addHeader = Web.load("hxfcgi_add_header",3);
 	public static var hxfcgi_print = Web.load("hxfcgi_print",2);
 	static var hxfcgi_cacheModule = Web.load("hxfcgi_cache_module",1);
+	static var hxfcgi_getClientIP = Web.load("hxfcgi_get_client_ip",1);
+	static var hxfcgi_getURI = Web.load("hxfcgi_get_uri",1);
 
 	
 	public static function init() {
 		Web.request = Web.hxfcgi_createRequest();
 		haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
-			Lib.print(info.className+":"+info.lineNumber+": "+Std.string(v));
+			Lib.print(info.className+":"+info.lineNumber+": "+Std.string(v)+"\n");
 		}
 	}
 	
@@ -74,17 +76,15 @@ class Web {
 	/**
 		Surprisingly returns the client IP address.
 	**/
-	public static function getClientIP() {
-		throw "not implemented";
-		return null;
+	public static function getClientIP():String {
+		return Web.hxfcgi_getClientIP(Web.request);
 	}
 
 	/**
 		Returns the original request URL (before any server internal redirections)
 	**/
-	public static function getURI() {
-		throw "not implemented";
-		return null;
+	public static function getURI():String {
+		return Web.hxfcgi_getURI(Web.request);
 	}
 
 	/**

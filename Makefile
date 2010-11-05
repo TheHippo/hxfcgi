@@ -4,7 +4,7 @@ CC = g++
 CFLAGS = -Wall -shared -I$(HXCPP_INCLUDE)
 LDFLAGS = -lfcgi
 OUT = bin/hxfcgi.ndll
-OBJ = src/hxfcgi.o src/request.o
+OBJ = src/hxfcgi.o src/request.o src/basic.o
 
 hxfcgi: $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(OUT) $(LDFLAGS)
