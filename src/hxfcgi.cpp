@@ -3,6 +3,10 @@
 #include "request.h"
 #include "basic.h"
 
+//for debugging:
+#include <fastcgi.h>
+#include <fcgi_stdio.h>
+
 DEFINE_KIND(hxRequest);
 
 
@@ -69,6 +73,20 @@ value hxfcgi_get_uri(value hreq) {
 	return alloc_string(d.getURI());
 }
 
+value hxfcgi_get_all_headers(value hreq) {
+	val_check_kind(hreq,hxRequest);	
+	hxfcgi::BasicData d;
+	list<string> header = d.getAllHeaders();
+	list<string>::iterator iter;
+	value ret = alloc_array(header.size());
+	int c = 0;
+	for (iter = header.begin();iter != header.end(); iter++,c++) {
+		val_array_set_i(ret,c,alloc_string((*iter).c_str()));
+	}
+	return ret;
+}
+
+DEFINE_PRIM(hxfcgi_get_all_headers,1);
 DEFINE_PRIM(hxfcgi_get_client_ip,1);
 DEFINE_PRIM(hxfcgi_get_uri,1);
 DEFINE_PRIM(hxfcgi_create_request,0);

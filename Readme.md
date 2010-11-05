@@ -21,7 +21,6 @@ Status
 * getHostName
 * setReturnCode
 * getClientHeader
-* getClientHeaders
 * getParamsString
 * getPostData
 * getCookies
@@ -41,6 +40,7 @@ Status
 * cacheModule
 * getClientIP
 * getURI
+* getClientHeaders
 * isModNeko is always `false`
 * isTora is always `false`
 

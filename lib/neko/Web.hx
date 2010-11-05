@@ -28,6 +28,10 @@ package neko;
 	This class is used for accessing the local Web server and the current
 	client request and informations.
 **/
+
+using StringTools;
+using Lambda;
+
 class Web {
 
 	public static var request:Dynamic;
@@ -38,6 +42,7 @@ class Web {
 	static var hxfcgi_cacheModule = Web.load("hxfcgi_cache_module",1);
 	static var hxfcgi_getClientIP = Web.load("hxfcgi_get_client_ip",1);
 	static var hxfcgi_getURI = Web.load("hxfcgi_get_uri",1);
+	static var hxfcgi_getAllHeaders = Web.load("hxfcgi_get_all_headers",1);
 
 	
 	public static function init() {
@@ -121,9 +126,19 @@ class Web {
 	/**
 		Retrieve all the client headers.
 	**/
-	public static function getClientHeaders() {
-		throw "not implemented";
-		return null;
+	public static function getClientHeaders(): List<{ value : String, header : String }> {
+		var ret = new List<{value:String,header:String}>();
+		var header:Array<String> = Lib.nekoToHaxe(Web.hxfcgi_getAllHeaders(Web.request));
+		for (h in header) {
+			var reg = ~/([^=]*)=(.*)/;
+			if(reg.match(h)) {
+				ret.add({
+					header:reg.matched(1),
+					value:reg.matched(2)
+				});
+			}
+		}		
+		return ret;
 	}
 
 	/**
