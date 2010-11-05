@@ -1,0 +1,3 @@
+-cp test
+-main Test
+-neko bin/test_native.n

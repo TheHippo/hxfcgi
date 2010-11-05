@@ -10,7 +10,9 @@ class Test {
 	static var id = 0;
 	
 	static function main() {
+		#if HXFGCI
 		Web.init();
+		#end
 		Web.cacheModule(run);
 		run();
 	}
