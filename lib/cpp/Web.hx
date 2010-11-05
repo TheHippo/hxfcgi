@@ -40,6 +40,9 @@ class Web {
 	
 	public static function init() {
 		Web.request = Web.hxfcgi_createRequest();
+		haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
+			Lib.print(info.className+":"+info.lineNumber+": "+Std.string(v));
+		}
 	}
 	
 	/**

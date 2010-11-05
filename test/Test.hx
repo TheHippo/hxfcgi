@@ -20,6 +20,7 @@ class Test {
 		Web.setHeader("Content-type","text/plain");
 		Lib.println("Foo:");
 		Lib.println(id++);
+		trace("foO");
 
 	}
 	
