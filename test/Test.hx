@@ -20,6 +20,7 @@ class Test {
 	static function run() {
 		Web.setHeader("X-Power-By","hxFCGI");
 		Web.setHeader("Content-type","text/plain");
+		Web.setReturnCode(301);
 		Lib.println(id++);
 		trace(Web.getClientIP());
 		trace(Web.getURI());

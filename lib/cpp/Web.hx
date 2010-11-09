@@ -45,6 +45,7 @@ class Web {
 	static var hxfcgi_getAllHeaders = Web.load("hxfcgi_get_all_headers",1);
 	static var hxfcgi_getHeader = Web.load("hxfcgi_get_header",2);
 	static var hxfcgi_getMethod = Web.load("hxfcgi_get_method",1);
+	static var hxfcgi_setReturnCode = Web.load("hxfcgi_set_return_code",2);
 
 	
 	public static function init() {
@@ -113,8 +114,7 @@ class Web {
 		Set the HTTP return code. Same remark as setHeader.
 	**/
 	public static function setReturnCode( r : Int ) {
-		throw "not implemented";
-		return null;
+		Web.hxfcgi_setReturnCode(Web.request,r);
 	}
 
 	/**

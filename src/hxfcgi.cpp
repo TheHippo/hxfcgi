@@ -106,6 +106,15 @@ value hxfcgi_get_method(value hreq) {
 	return alloc_string(ret);	
 }
 
+value hxfcgi_set_return_code(value hreq,value hcode) {
+	val_check(hcode,int);
+	hxfcgi::Request *req = get_request(hreq);
+	req->setReturnCode(val_int(hcode));
+	return val_null;
+}
+
+
+DEFINE_PRIM(hxfcgi_set_return_code,2);
 DEFINE_PRIM(hxfcgi_get_method,1);
 DEFINE_PRIM(hxfcgi_get_header,2);
 DEFINE_PRIM(hxfcgi_get_all_headers,1);
