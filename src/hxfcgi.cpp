@@ -97,6 +97,16 @@ value hxfcgi_get_header(value hreq,value hkey) {
 		return alloc_string(ret.c_str());
 }
 
+value hxfcgi_get_method(value hreq) {
+	val_check_kind(hreq,hxRequest);
+	hxfcgi::BasicData d;
+	char *ret = d.getMethod();
+	if (ret == NULL)
+		hx_failure("This seems not to be a HTTP Request");
+	return alloc_string(ret);	
+}
+
+DEFINE_PRIM(hxfcgi_get_method,1);
 DEFINE_PRIM(hxfcgi_get_header,2);
 DEFINE_PRIM(hxfcgi_get_all_headers,1);
 DEFINE_PRIM(hxfcgi_get_client_ip,1);

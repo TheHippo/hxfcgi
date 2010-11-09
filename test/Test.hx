@@ -29,6 +29,7 @@ class Test {
 		}
 		trace(Web.getClientHeader("user_agent"));
 		trace(Web.getClientHeader("user_agents"));
+		trace(Web.getMethod());
 
 	}
 	

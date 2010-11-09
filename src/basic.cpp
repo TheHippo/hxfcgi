@@ -34,24 +34,15 @@ namespace hxfcgi {
 		transform(key.begin(),key.end(),key.begin(),::toupper);
 		rkey.append(key);
 		char *cret = getenv(rkey.c_str());
-		/*if (cret != NULL)
-			printf("%s\n",cret);
-		else
-			printf("no header\n"); */
-		//return rkey;
 		if (cret != NULL)
 			return string(cret);
 		else
 			return string("");
 	}
 	
-	/*void BasicData::clearList(list<string> list) {
-		list<string> iter;
-		for (iter = list.begin(); iter<list.end(); iter++) {
-			delete (*iter);
-		}
-		delete list;	
-	} */
+	char* BasicData::getMethod() {
+		return getenv("REQUEST_METHOD");
+	}
 	
 	
 }

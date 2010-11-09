@@ -44,6 +44,7 @@ class Web {
 	static var hxfcgi_getURI = Web.load("hxfcgi_get_uri",1);
 	static var hxfcgi_getAllHeaders = Web.load("hxfcgi_get_all_headers",1);
 	static var hxfcgi_getHeader = Web.load("hxfcgi_get_header",2);
+	static var hxfcgi_getMethod = Web.load("hxfcgi_get_method",1);
 
 	
 	public static function init() {
@@ -242,8 +243,7 @@ class Web {
 		Get the HTTP method used by the client. This api requires Neko 1.7.1+
 	**/
 	public static function getMethod() : String {
-		throw "not implemented";
-		return null;
+		return Web.hxfcgi_getMethod(Web.request);
 	}
 
 	/**
