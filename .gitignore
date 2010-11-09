@@ -1,3 +1,4 @@
 *.o
 *.ndll
 bin/*
+Readme.html
