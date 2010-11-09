@@ -23,7 +23,12 @@ class Test {
 		Lib.println(id++);
 		trace(Web.getClientIP());
 		trace(Web.getURI());
-		trace(Web.getClientHeaders());
+		var header = Web.getClientHeaders();
+		for (x in header) {
+			trace(x.header+": "+x.value);
+		}
+		trace(Web.getClientHeader("user_agent"));
+		trace(Web.getClientHeader("user_agents"));
 
 	}
 	

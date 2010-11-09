@@ -4,6 +4,7 @@
 #include "basic.h"
 #include <list>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,6 +27,22 @@ namespace hxfcgi {
 				header.push_back(s->substr(5));
 		}
 		return header;
+	}
+	
+	string BasicData::getHeader(string key) {
+		string rkey = "HTTP_";
+		transform(key.begin(),key.end(),key.begin(),::toupper);
+		rkey.append(key);
+		char *cret = getenv(rkey.c_str());
+		/*if (cret != NULL)
+			printf("%s\n",cret);
+		else
+			printf("no header\n"); */
+		//return rkey;
+		if (cret != NULL)
+			return string(cret);
+		else
+			return string("");
 	}
 	
 	/*void BasicData::clearList(list<string> list) {

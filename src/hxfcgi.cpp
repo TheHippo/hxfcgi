@@ -86,6 +86,18 @@ value hxfcgi_get_all_headers(value hreq) {
 	return ret;
 }
 
+value hxfcgi_get_header(value hreq,value hkey) {
+	val_check_kind(hreq,hxRequest);
+	val_check(hkey,string);
+	hxfcgi::BasicData d;
+	string ret = d.getHeader(val_string(hkey));
+	if (ret.compare("")==0)
+		return val_null;
+	else
+		return alloc_string(ret.c_str());
+}
+
+DEFINE_PRIM(hxfcgi_get_header,2);
 DEFINE_PRIM(hxfcgi_get_all_headers,1);
 DEFINE_PRIM(hxfcgi_get_client_ip,1);
 DEFINE_PRIM(hxfcgi_get_uri,1);

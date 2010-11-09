@@ -10,6 +10,7 @@ namespace hxfcgi {
 			char* getClientIP();
 			char* getURI();
 			list<string> getAllHeaders();
+			string getHeader(string key);
 			//void clearList(list<string> list);
 		
 	};

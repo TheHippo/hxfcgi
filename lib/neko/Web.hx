@@ -43,6 +43,7 @@ class Web {
 	static var hxfcgi_getClientIP = Web.load("hxfcgi_get_client_ip",1);
 	static var hxfcgi_getURI = Web.load("hxfcgi_get_uri",1);
 	static var hxfcgi_getAllHeaders = Web.load("hxfcgi_get_all_headers",1);
+	static var hxfcgi_getHeader = Web.load("hxfcgi_get_header",2);
 
 	
 	public static function init() {
@@ -119,8 +120,7 @@ class Web {
 		Retrieve a client header value sent with the request.
 	**/
 	public static function getClientHeader( k : String ) {
-		throw "not implemented";
-		return null;
+		return Lib.nekoToHaxe(Web.hxfcgi_getHeader(Web.request,Lib.haxeToNeko(k)));
 	}
 
 	/**
