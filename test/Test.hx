@@ -19,8 +19,9 @@ class Test {
 	
 	static function run() {
 		Web.setHeader("X-Power-By","hxFCGI");
-		Web.setHeader("Content-type","text/plain");
+//		Web.setHeader("Content-type","text/plain");
 		Web.setReturnCode(301);
+		Lib.print("<html><head></head><body><pre>");
 		Lib.println(id++);
 		trace(Web.getClientIP());
 		trace(Web.getURI());
@@ -31,6 +32,9 @@ class Test {
 		trace(Web.getClientHeader("user_agent"));
 		trace(Web.getClientHeader("user_agents"));
 		trace(Web.getMethod());
+		Lib.print("</pre>");
+		Lib.print('<form action="?foo=bar&test=test" method="POST"><input type="text" name="text"/></form>');
+		Lib.print("</body></html>");
 
 	}
 	
