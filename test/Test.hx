@@ -32,8 +32,12 @@ class Test {
 		trace(Web.getClientHeader("user_agent"));
 		trace(Web.getClientHeader("user_agents"));
 		trace(Web.getMethod());
+		if (Web.getMethod()=="POST") {
+			var post = Web.getPostData();
+			trace(post.length+":"+post);
+		}
 		Lib.print("</pre>");
-		Lib.print('<form action="?foo=bar&test=test" method="POST"><input type="text" name="text"/></form>');
+		Lib.print('<form action="?foo=bar&test=test" method="POST"><input type="text" name="text"/><input type="password" name="pass" /><input type="submit" /></form>');
 		Lib.print("</body></html>");
 
 	}

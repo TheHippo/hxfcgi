@@ -11,6 +11,7 @@ Differences to haxe Web API:
 * If you using FastCGI you should use `Web.cacheModule()`, otherwise the module will be restarted after every request, which is quite slow
 * If you using CGI if does not matter if you use `Web.cacheModule()`.
 * `HTTP-Header` are slightly different then in the haXe native neko API. *Example:* "User-Agent" in native Web API will become "USER\_AGENT" (case-insensitive)
+* You could call `Web.getPostData()` even if it is a GET request
 
 Status
 ------
@@ -21,7 +22,6 @@ Status
 * getParamValues
 * getHostName
 * getParamsString
-* getPostData
 * getCookies
 * setCookie
 * getAuthorization
@@ -42,6 +42,7 @@ Status
 * getClientHeader
 * getClientHeaders
 * setReturnCode
+* getPostData
 * isModNeko is always `false`
 * isTora is always `false`
 

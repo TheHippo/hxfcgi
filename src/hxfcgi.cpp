@@ -2,6 +2,7 @@
 #include <hx/CFFI.h>
 #include "request.h"
 #include "basic.h"
+#include "data.h"
 
 //for debugging:
 #include <fastcgi.h>
@@ -113,7 +114,13 @@ value hxfcgi_set_return_code(value hreq,value hcode) {
 	return val_null;
 }
 
+value hxfcgi_get_post_data(value hreq) {
+	val_check_kind(hreq,hxRequest);
+	hxfcgi::Data d;
+	return alloc_string(d.getPostData().c_str());	
+}
 
+DEFINE_PRIM(hxfcgi_get_post_data,1);
 DEFINE_PRIM(hxfcgi_set_return_code,2);
 DEFINE_PRIM(hxfcgi_get_method,1);
 DEFINE_PRIM(hxfcgi_get_header,2);

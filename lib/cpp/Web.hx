@@ -46,6 +46,7 @@ class Web {
 	static var hxfcgi_getHeader = Web.load("hxfcgi_get_header",2);
 	static var hxfcgi_getMethod = Web.load("hxfcgi_get_method",1);
 	static var hxfcgi_setReturnCode = Web.load("hxfcgi_set_return_code",2);
+	static var hxfcgi_getPostData = Web.load ("hxfcgi_get_post_data",1);
 
 	
 	public static function init() {
@@ -159,8 +160,7 @@ class Web {
 		methods.
 	**/
 	public static function getPostData() {
-		throw "not implemented";
-		return null;
+		return Web.hxfcgi_getPostData(Web.request);
 	}
 
 	/**
