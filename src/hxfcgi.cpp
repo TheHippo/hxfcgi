@@ -120,6 +120,13 @@ value hxfcgi_get_post_data(value hreq) {
 	return alloc_string(d.getPostData().c_str());	
 }
 
+value hxfcgi_get_params_string(value hreq) {
+	val_check_kind(hreq,hxRequest);
+	hxfcgi::Data d;
+	return alloc_string(d.getParamsString().c_str());
+}
+
+DEFINE_PRIM(hxfcgi_get_params_string,1);
 DEFINE_PRIM(hxfcgi_get_post_data,1);
 DEFINE_PRIM(hxfcgi_set_return_code,2);
 DEFINE_PRIM(hxfcgi_get_method,1);

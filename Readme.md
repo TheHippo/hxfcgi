@@ -21,7 +21,6 @@ Status
 * getParams
 * getParamValues
 * getHostName
-* getParamsString
 * getCookies
 * setCookie
 * getAuthorization
@@ -43,6 +42,7 @@ Status
 * getClientHeaders
 * setReturnCode
 * getPostData
+* getParamsString
 * isModNeko is always `false`
 * isTora is always `false`
 

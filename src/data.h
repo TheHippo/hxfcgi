@@ -7,6 +7,7 @@ namespace hxfcgi {
 	class Data {
 		public:
 			string getPostData();
+			string getParamsString();
 		private:
 			int getPostLength();
 		

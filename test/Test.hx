@@ -36,6 +36,7 @@ class Test {
 			var post = Web.getPostData();
 			trace(post.length+":"+post);
 		}
+		trace(Web.getParamsString());
 		Lib.print("</pre>");
 		Lib.print('<form action="?foo=bar&test=test" method="POST"><input type="text" name="text"/><input type="password" name="pass" /><input type="submit" /></form>');
 		Lib.print("</body></html>");

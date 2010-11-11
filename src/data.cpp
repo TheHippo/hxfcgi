@@ -18,6 +18,11 @@ namespace hxfcgi {
 		return data;
 	}
 	
+	string Data::getParamsString() {
+		string ret(getenv("QUERY_STRING"));
+		return ret;
+	}
+	
 	int Data::getPostLength() {
 		int ret = 0;
 		char *clen = getenv("CONTENT_LENGTH");
