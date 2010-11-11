@@ -3,6 +3,9 @@
 
 using namespace std;
 
+#ifndef HXFCGI_BASICDATA
+#define HXFCGI_BASICDATA
+
 namespace hxfcgi {
 	
 	class BasicData {
@@ -16,3 +19,5 @@ namespace hxfcgi {
 	};
 	
 }
+
+#endif

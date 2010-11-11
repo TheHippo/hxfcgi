@@ -63,7 +63,9 @@ class Web {
 	**/
 	public static function getParams() {
 		var ret = new Hash<String>();
-		var a:Array<String> = Web.hxfcgi_getParams(Web.request);
+		var a:Array<String> = Lib.nekoToHaxe(Web.hxfcgi_getParams(Web.request));
+		for (x in 0...(a.length >> 1))
+			ret.set(a[2*x],a[2*x+1]);
 		return ret;
 	}
 

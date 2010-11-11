@@ -15,13 +15,11 @@ namespace hxfcgi {
 		char c[length];
 		fgets(c,length+1,stdin);
 		string data(c);
-		printf("post: %s\n",data.c_str());
 		return data;
 	}
 	
 	string Data::getParamsString() {
 		string ret(getenv("QUERY_STRING"));
-		printf("get: %s\n",ret.c_str());
 		return ret;
 	}
 	
@@ -39,13 +37,45 @@ namespace hxfcgi {
 		}
 	}
 	
-	map<string,string> Data::getParams() {
+	map<string,string> Data::getParams(Request req) {
 		map<string,string> params;
-		string base = "";
-		string post = getPostData();
-		string get = getParamsString();
-		printf("combined: %s\n",base.c_str());
+		string base = getCompleteQueryString(req.getPostData(),getParamsString());
+		string part,key,value;
+		unsigned int ppos = base.find("&");
+		while (ppos != string::npos) {
+			part = base.substr(0,ppos);
+			params[parseKey(part)]=parseValue(part);
+			base = base.substr(ppos+1);
+			ppos = base.find("&");
+		}
+		params[parseKey(base)]=parseValue(base);
 		return params;
 	}
 	
+	string Data::getCompleteQueryString(string post, string get) {
+		string base = "";
+		if (post.length() != 0)
+			base.append(post);
+		if (get.length() != 0 && post.length() != 0)
+			base.append("&");
+		if (get.length() != 0)
+			base.append(get);
+		return base;
+	}
+	
+	string Data::parseKey(string data) {
+		unsigned int pos = data.find("=");
+		if (pos != string::npos)
+			return data.substr(0,pos);
+		else
+			return "";
+	}
+	
+	string Data::parseValue(string data) {
+		unsigned int pos = data.find("=");
+		if (pos != string::npos)
+			return data.substr(pos+1);
+		else
+			return "";
+	}
 }

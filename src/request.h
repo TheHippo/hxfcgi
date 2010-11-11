@@ -3,6 +3,9 @@
 
 using namespace std;
 
+#ifndef HXFCGI_REQUEST
+#define HXFCGI_REQUEST
+
 namespace hxfcgi {
 	
 	class Request {
@@ -25,3 +28,5 @@ namespace hxfcgi {
 	};
 	
 }
+
+#endif

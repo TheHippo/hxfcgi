@@ -126,10 +126,16 @@ value hxfcgi_get_params_string(value hreq) {
 }
 
 value hxfcgi_get_params(value hreq) {
-	val_check_kind(hreq,hxRequest);
+	hxfcgi::Request *req = get_request(hreq);
 	hxfcgi::Data d;
-	map<string,string> params = d.getParams();
-	return val_null;	
+	map<string,string> params = d.getParams((*req));
+	value ret = alloc_array(params.size()*2);
+	unsigned int c = 0;
+	for (map<string,string>::iterator iter = params.begin(); iter!=params.end(); iter++, c++) {
+		val_array_set_i(ret,2*c,alloc_string(iter->first.c_str()));
+		val_array_set_i(ret,2*c+1,alloc_string(iter->second.c_str()));
+	}
+	return ret;
 }
 
 DEFINE_PRIM(hxfcgi_get_params,1);

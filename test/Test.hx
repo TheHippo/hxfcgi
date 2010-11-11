@@ -38,6 +38,7 @@ class Test {
 		}
 		trace(Web.getParamsString());
 		var params = Web.getParams();
+		trace(params);
 		for (k in params.keys()) {
 			trace(k+": "+params.get(k));
 		}

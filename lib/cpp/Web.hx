@@ -48,6 +48,7 @@ class Web {
 	static var hxfcgi_setReturnCode = Web.load("hxfcgi_set_return_code",2);
 	static var hxfcgi_getPostData = Web.load ("hxfcgi_get_post_data",1);
 	static var hxfcgi_getParamsString = Web.load("hxfcgi_get_params_string",1);
+	static var hxfcgi_getParams = Web.load("hxfcgi_get_params",1);
 
 	
 	public static function init() {
@@ -61,8 +62,11 @@ class Web {
 		Returns the GET and POST parameters.
 	**/
 	public static function getParams() {
-		throw "not implemented";
-		return null;
+		var ret = new Hash<String>();
+		var a:Array<String> = Web.hxfcgi_getParams(Web.request);
+		for (x in 0...(a.length >> 1))
+			ret.set(a[2*x],a[2*x+1]);
+		return ret;
 	}
 
 	/**
