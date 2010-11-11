@@ -14,8 +14,14 @@ namespace hxfcgi {
 		return getenv("REMOTE_ADDR");
 	}
 	
-	char* BasicData::getURI() {
-		return getenv("REQUEST_URI");
+	string BasicData::getURI() {
+		string uri(getenv("REQUEST_URI"));
+		unsigned int pos = uri.find("?");
+		if (pos == string::npos)
+			return uri;
+		else {
+			return uri.substr(0,pos);
+		}
 	}
 	
 	list<string> BasicData::getAllHeaders() {

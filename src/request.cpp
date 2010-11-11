@@ -2,16 +2,28 @@
 #include <fcgi_stdio.h>
 #include <sstream>
 #include "request.h"
+#include "data.h"
 
 namespace hxfcgi {
 	
 	Request::Request() {
 		header_sent = false;
+		post_fetched = false;
+		postData = "";
 		header["Content-type"]="text/html";
 		if (!FCGI_Accept()==0) {
 			string error = "Could not generate Request";
 			throw error;
 		}
+	}
+	
+	string Request::getPostData() {
+		if (!post_fetched) {
+			Data d;
+			postData = d.getPostData();
+			post_fetched = true;
+		}		
+		return postData;
 	}
 	
 	bool Request::headerSent() {

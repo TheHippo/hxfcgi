@@ -37,6 +37,10 @@ class Test {
 			trace(post.length+":"+post);
 		}
 		trace(Web.getParamsString());
+		var params = Web.getParams();
+		for (k in params.keys()) {
+			trace(k+": "+params.get(k));
+		}
 		Lib.print("</pre>");
 		Lib.print('<form action="?foo=bar&test=test" method="POST"><input type="text" name="text"/><input type="password" name="pass" /><input type="submit" /></form>');
 		Lib.print("</body></html>");

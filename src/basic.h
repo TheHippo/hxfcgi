@@ -8,7 +8,7 @@ namespace hxfcgi {
 	class BasicData {
 		public:
 			char* getClientIP();
-			char* getURI();
+			string getURI();
 			list<string> getAllHeaders();
 			string getHeader(string key);
 			char* getMethod();

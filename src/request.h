@@ -13,10 +13,14 @@ namespace hxfcgi {
 			void addHeader(string type,string value);
 			void print(string msg);
 			void setReturnCode(int code);
+			string getPostData();
+			
 		
 		private:
 			map<string,string> header;
 			bool header_sent;
+			bool post_fetched;
+			string postData;
 			string codeToHeader(int r);	
 	};
 	

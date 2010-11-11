@@ -71,7 +71,7 @@ value hxfcgi_get_client_ip(value hreq) {
 value hxfcgi_get_uri(value hreq) {
 	val_check_kind(hreq,hxRequest);	
 	hxfcgi::BasicData d;
-	return alloc_string(d.getURI());
+	return alloc_string(d.getURI().c_str());
 }
 
 value hxfcgi_get_all_headers(value hreq) {
@@ -115,9 +115,8 @@ value hxfcgi_set_return_code(value hreq,value hcode) {
 }
 
 value hxfcgi_get_post_data(value hreq) {
-	val_check_kind(hreq,hxRequest);
-	hxfcgi::Data d;
-	return alloc_string(d.getPostData().c_str());	
+	hxfcgi::Request *req = get_request(hreq);
+	return alloc_string(req->getPostData().c_str());	
 }
 
 value hxfcgi_get_params_string(value hreq) {
@@ -126,6 +125,14 @@ value hxfcgi_get_params_string(value hreq) {
 	return alloc_string(d.getParamsString().c_str());
 }
 
+value hxfcgi_get_params(value hreq) {
+	val_check_kind(hreq,hxRequest);
+	hxfcgi::Data d;
+	map<string,string> params = d.getParams();
+	return val_null;	
+}
+
+DEFINE_PRIM(hxfcgi_get_params,1);
 DEFINE_PRIM(hxfcgi_get_params_string,1);
 DEFINE_PRIM(hxfcgi_get_post_data,1);
 DEFINE_PRIM(hxfcgi_set_return_code,2);

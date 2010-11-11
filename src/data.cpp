@@ -15,11 +15,13 @@ namespace hxfcgi {
 		char c[length];
 		fgets(c,length+1,stdin);
 		string data(c);
+		printf("post: %s\n",data.c_str());
 		return data;
 	}
 	
 	string Data::getParamsString() {
 		string ret(getenv("QUERY_STRING"));
+		printf("get: %s\n",ret.c_str());
 		return ret;
 	}
 	
@@ -35,6 +37,15 @@ namespace hxfcgi {
 			stream >> ret;
 			return ret;
 		}
+	}
+	
+	map<string,string> Data::getParams() {
+		map<string,string> params;
+		string base = "";
+		string post = getPostData();
+		string get = getParamsString();
+		printf("combined: %s\n",base.c_str());
+		return params;
 	}
 	
 }
