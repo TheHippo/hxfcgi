@@ -51,11 +51,12 @@ class Web {
 	static var hxfcgi_getParams = Web.load("hxfcgi_get_params",1);
 	static var hxfcgi_log = Web.load("hxfcgi_log",2);
 	static var hxfcgi_getCookies = Web.load("hxfcgi_get_cookies",1);
+	static var hxfcgi_setCookie = Web.load("hxfcgi_set_cookie",3);
 
 	
 	public static function init() {
 		Web.request = Web.hxfcgi_createRequest();
-		haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
+	haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
 			Lib.print(info.fileName+":"+info.lineNumber+": "+Std.string(v)+"\n");
 		}
 	}
@@ -207,8 +208,21 @@ class Web {
 		Set a Cookie value in the HTTP headers. Same remark as setHeader.
 	**/
 	public static function setCookie( key : String, value : String, ?expire: Date, ?domain: String, ?path: String, ?secure: Bool ) {
-		throw "not implemented";
-		return null;
+		var buf = new StringBuf();
+                buf.add(Lib.haxeToNeko(value));
+                if( expire != null ) addPair(buf, "expires=", DateTools.format(expire, "%a, %d-%b-%Y %H:%M:%S GMT"));
+                addPair(buf, "domain=", Lib.haxeToNeko(domain));
+                addPair(buf, "path=", Lib.haxeToNeko(path));
+                if( secure ) addPair(buf, "secure", "");
+                var v = buf.toString();
+		Web.hxfcgi_setCookie(Web.request,Lib.haxeToNeko(key),v);
+	}
+
+	static function addPair( buf : StringBuf, name, value ) {
+		if( value == null ) return;
+		buf.add("; ");
+		buf.add(name);
+		buf.add(value);
 	}
 
 	/**

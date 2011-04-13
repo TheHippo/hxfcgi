@@ -171,6 +171,23 @@ value hxfcgi_get_cookies(value hreq) {
         return p;
 }
 
+value hxfcgi_set_cookie(value hreq, value name, value v) {
+	val_check_kind(hreq,hxRequest);
+	val_check(name,string);
+        val_check(v,string);
+	buffer b;
+        value str;
+	hxfcgi::Request *req = get_request(hreq);
+        b = alloc_buffer(NULL);
+        val_buffer(b,name);
+        buffer_append(b,"=");
+        val_buffer(b,v);
+        buffer_append(b,";");
+        str = buffer_to_string(b);
+        req->addHeader("Set-Cookie",val_string(str));
+	return val_true;
+}
+
 DEFINE_PRIM(hxfcgi_get_params,1);
 DEFINE_PRIM(hxfcgi_get_params_string,1);
 DEFINE_PRIM(hxfcgi_get_post_data,1);
@@ -186,3 +203,4 @@ DEFINE_PRIM(hxfcgi_print,2);
 DEFINE_PRIM(hxfcgi_log,2);
 DEFINE_PRIM(hxfcgi_cache_module,1);
 DEFINE_PRIM(hxfcgi_get_cookies,1);
+DEFINE_PRIM(hxfcgi_set_cookie,3);
