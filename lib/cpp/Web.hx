@@ -106,8 +106,7 @@ class Web {
 		Returns the local server host name
 	**/
 	public static function getHostName() {
-		throw "not implemented";
-		return null;
+		return  Sys.getEnv('SERVER_NAME');
 	}
 
 	/**
