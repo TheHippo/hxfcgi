@@ -145,6 +145,32 @@ value hxfcgi_get_params(value hreq) {
 	return ret;
 }
 
+value hxfcgi_get_cookies(value hreq) {
+	val_check_kind(hreq,hxRequest);
+	hxfcgi::BasicData d;
+        string ret = d.getHeader("COOKIE");
+        if (ret.compare("")==0)
+                return val_null;
+	const char *k = ret.c_str();
+        char *start, *end;
+	value p = val_null, tmp;
+        while( (start = strchr(k,'=')) != NULL ) {
+                start++;
+                end = start;
+                while( *end != 0 && *end != '\r' && *end != '\n' && *end != ';' )
+                        end++;
+                tmp = alloc_array(3);
+		val_array_set_i(tmp,0,copy_string(k,(int)(start-k-1)));
+                val_array_set_i(tmp,1,copy_string(start,(int)(end-start)));
+                val_array_set_i(tmp,2,p);
+                p = tmp;
+                if( *end != ';' || end[1] != ' ' )
+                        break;
+                k = end + 2;
+        }
+        return p;
+}
+
 DEFINE_PRIM(hxfcgi_get_params,1);
 DEFINE_PRIM(hxfcgi_get_params_string,1);
 DEFINE_PRIM(hxfcgi_get_post_data,1);
@@ -159,3 +185,4 @@ DEFINE_PRIM(hxfcgi_add_header,3);
 DEFINE_PRIM(hxfcgi_print,2);
 DEFINE_PRIM(hxfcgi_log,2);
 DEFINE_PRIM(hxfcgi_cache_module,1);
+DEFINE_PRIM(hxfcgi_get_cookies,1);
