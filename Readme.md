@@ -14,6 +14,7 @@ Differences to haxe Web API:
 * haxe native `Web.getClientHeaders()` return non HTTP header like Content-Type and Content-Length
 * You could call `Web.getPostData()` even if it is a GET request
 * `Web.flush()` do nothing.
+* You need to print some data, when sending headers only, call `Lib.print('');` after setting all headers.
 
 Status
 ------
@@ -21,7 +22,6 @@ Status
 *Not Implemented*:
 
 * getHostName
-* getAuthorization
 * getMultipart
 * parseMultipart
 
@@ -44,6 +44,7 @@ Status
 * getCookies
 * setCookie
 * getCwd
+* getAuthorization
 * flush do nothing
 * isModNeko is always `false`
 * isTora is always `false`
