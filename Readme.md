@@ -19,10 +19,7 @@ Status
 
 *Not Implemented*:
 
-* getParamValues
 * getHostName
-* getCookies
-* setCookie
 * getAuthorization
 * getCwd
 * getMultipart
@@ -43,7 +40,10 @@ Status
 * getPostData
 * getParamsString
 * getParams
+* getParamValues
 * logMessage
+* getCookies
+* setCookie
 * isModNeko is always `false`
 * isTora is always `false`
 
