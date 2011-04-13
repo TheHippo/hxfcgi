@@ -21,7 +21,6 @@ Status
 
 * getHostName
 * getAuthorization
-* getCwd
 * getMultipart
 * parseMultipart
 * flush
@@ -44,6 +43,7 @@ Status
 * logMessage
 * getCookies
 * setCookie
+* getCwd
 * isModNeko is always `false`
 * isTora is always `false`
 

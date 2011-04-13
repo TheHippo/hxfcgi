@@ -236,9 +236,9 @@ class Web {
 	/**
 		Get the current script directory in the local filesystem.
 	**/
-	public static function getCwd() {
-		throw "not implemented";
-		return null;
+	public static function getCwd():String {
+		var f =  Sys.getEnv('SCRIPT_FILENAME');
+		return f.substr(0,f.lastIndexOf('/')+1);
 	}
 
 	/**
