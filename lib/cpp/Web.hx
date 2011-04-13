@@ -51,6 +51,7 @@ class Web {
 	static var hxfcgi_getParams = Web.load("hxfcgi_get_params",1);
 	static var hxfcgi_log = Web.load("hxfcgi_log",2);
 	static var hxfcgi_getCookies = Web.load("hxfcgi_get_cookies",1);
+	static var hxfcgi_setCookie = Web.load("hxfcgi_set_cookie",3);
 
 	
 	public static function init() {
@@ -207,9 +208,22 @@ class Web {
 		Set a Cookie value in the HTTP headers. Same remark as setHeader.
 	**/
 	public static function setCookie( key : String, value : String, ?expire: Date, ?domain: String, ?path: String, ?secure: Bool ) {
-		throw "not implemented";
-		return null;
+		var buf = new StringBuf();
+                buf.add(value);
+                if( expire != null ) addPair(buf, "expires=", DateTools.format(expire, "%a, %d-%b-%Y %H:%M:%S GMT"));
+                addPair(buf, "domain=", domain);
+                addPair(buf, "path=", path);
+                if( secure ) addPair(buf, "secure", "");
+                var v = buf.toString();
+		Web.hxfcgi_setCookie(Web.request,key,v);
 	}
+
+	static function addPair( buf : StringBuf, name, value ) {
+		if( value == null ) return;
+		buf.add("; ");
+		buf.add(name);
+		buf.add(value);
+ 	}
 
 	/**
 		Returns an object with the authorization sent by the client (Basic scheme only).
