@@ -27,6 +27,7 @@ class Test {
 		trace(Web.getCookies());
 		trace(Web.getClientIP());
 		trace(Web.getURI());
+		trace(Web.getCwd());
 		var header = Web.getClientHeaders();
 		for (x in header) {
 			trace(x.header+": "+x.value);
