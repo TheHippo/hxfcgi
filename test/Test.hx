@@ -28,6 +28,7 @@ class Test {
 		trace(Web.getClientIP());
 		trace(Web.getURI());
 		trace(Web.getCwd());
+		trace(Web.getAuthorization());
 		var header = Web.getClientHeaders();
 		for (x in header) {
 			trace(x.header+": "+x.value);
