@@ -28,7 +28,6 @@ Status
 * getMultipart
 * parseMultipart
 * flush
-* logMessage
 
 *Implemented*:
 
@@ -44,6 +43,7 @@ Status
 * getPostData
 * getParamsString
 * getParams
+* logMessage
 * isModNeko is always `false`
 * isTora is always `false`
 

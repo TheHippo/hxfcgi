@@ -49,6 +49,7 @@ class Web {
 	static var hxfcgi_getPostData = Web.load ("hxfcgi_get_post_data",1);
 	static var hxfcgi_getParamsString = Web.load("hxfcgi_get_params_string",1);
 	static var hxfcgi_getParams = Web.load("hxfcgi_get_params",1);
+	static var hxfcgi_log = Web.load("hxfcgi_log",2);
 
 	
 	public static function init() {
@@ -254,8 +255,7 @@ class Web {
 		Write a message into the web server log file. This api requires Neko 1.7.1+
 	**/
 	public static function logMessage( msg : String ) {
-		throw "not implemented";
-		return null;
+		Web.hxfcgi_log(Web.request,msg);
 	}
 	
 	static function load(name,narg):Dynamic {

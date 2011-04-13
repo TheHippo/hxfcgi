@@ -48,6 +48,10 @@ namespace hxfcgi {
 			printHeaders();
 		FCGI_printf("%s",msg.c_str());
 	}
+
+	void Request::log(string msg) {
+		FCGI_fprintf(stderr, "%s",msg.c_str());
+ 	}
 	
 	void Request::setReturnCode(int code) {
 		header["Status"]=codeToHeader(code);

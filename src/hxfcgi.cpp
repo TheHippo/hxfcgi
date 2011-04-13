@@ -43,6 +43,13 @@ value hxfcgi_print(value hreq,value msg) {
 	return val_null;
 }
 
+value hxfcgi_log(value hreq,value msg) {
+	val_check(msg,string);
+	hxfcgi::Request *req = get_request(hreq);
+	req->log(val_string(msg));
+	return val_null;
+}
+
 value hxfcgi_cache_module(value func) {
 	val_check_function(func,1);
 	hxfcgi::Request *req;
@@ -150,4 +157,5 @@ DEFINE_PRIM(hxfcgi_get_uri,1);
 DEFINE_PRIM(hxfcgi_create_request,0);
 DEFINE_PRIM(hxfcgi_add_header,3);
 DEFINE_PRIM(hxfcgi_print,2);
+DEFINE_PRIM(hxfcgi_log,2);
 DEFINE_PRIM(hxfcgi_cache_module,1);

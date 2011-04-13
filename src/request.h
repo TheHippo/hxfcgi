@@ -15,6 +15,7 @@ namespace hxfcgi {
 			void printHeaders();
 			void addHeader(string type,string value);
 			void print(string msg);
+			void log(string msg);
 			void setReturnCode(int code);
 			string getPostData();
 			
