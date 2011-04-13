@@ -1,4 +1,4 @@
-HXCPP_INCLUDE = $(shell sh -c 'haxelib path hxcpp')include/
+HXCPP_INCLUDE = $(shell sh -c 'haxelib path hxcpp | head -1')include/
 
 CC = g++
 CFLAGS = -Wall -shared -I$(HXCPP_INCLUDE)
