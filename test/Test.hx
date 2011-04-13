@@ -24,6 +24,7 @@ class Test {
 		Web.setCookie("test","hxfcgi"+id,null,null,"/",false);
 		Lib.print("<html><head></head><body><pre>");
 		Lib.println(id++);
+		trace(Web.getHostName());
 		trace(Web.getCookies());
 		trace(Web.getClientIP());
 		trace(Web.getURI());

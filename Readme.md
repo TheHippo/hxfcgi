@@ -21,7 +21,6 @@ Status
 
 *Not Implemented*:
 
-* getHostName
 * getMultipart
 * parseMultipart
 
@@ -45,6 +44,7 @@ Status
 * setCookie
 * getCwd
 * getAuthorization
+* getHostName
 * flush do nothing
 * isModNeko is always `false`
 * isTora is always `false`
