@@ -21,8 +21,10 @@ class Test {
 		Web.setHeader("X-Power-By","hxFCGI");
 //		Web.setHeader("Content-type","text/plain");
 		Web.setReturnCode(301);
+		Web.setCookie("test","hxfcgi"+id,null,null,"/",false);
 		Lib.print("<html><head></head><body><pre>");
 		Lib.println(id++);
+		trace(Web.getCookies());
 		trace(Web.getClientIP());
 		trace(Web.getURI());
 		var header = Web.getClientHeaders();
