@@ -21,7 +21,7 @@ namespace hxfcgi {
 	
 	string BasicData::getURI() {
 		string uri(getenv("REQUEST_URI"));
-		unsigned int pos = uri.find("?");
+		std::string::size_type pos = uri.find("?");
 		if (pos == string::npos)
 			return uri;
 		else {

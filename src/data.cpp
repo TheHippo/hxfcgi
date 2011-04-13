@@ -41,7 +41,7 @@ namespace hxfcgi {
 		map<string,string> params;
 		string base = getCompleteQueryString(req.getPostData(),getParamsString());
 		string part,key,value;
-		unsigned int ppos = base.find("&");
+		std::string::size_type ppos = base.find("&");
 		while (ppos != string::npos) {
 			part = base.substr(0,ppos);
 			params[parseKey(part)]=parseValue(part);
@@ -64,7 +64,7 @@ namespace hxfcgi {
 	}
 	
 	string Data::parseKey(string data) {
-		unsigned int pos = data.find("=");
+		std::string::size_type pos = data.find("=");
 		if (pos != string::npos)
 			return data.substr(0,pos);
 		else
@@ -72,7 +72,7 @@ namespace hxfcgi {
 	}
 	
 	string Data::parseValue(string data) {
-		unsigned int pos = data.find("=");
+		std::string::size_type pos = data.find("=");
 		if (pos != string::npos)
 			return data.substr(pos+1);
 		else
