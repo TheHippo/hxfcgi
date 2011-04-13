@@ -52,6 +52,7 @@ class Web {
 	static var hxfcgi_log = Web.load("hxfcgi_log",2);
 	static var hxfcgi_getCookies = Web.load("hxfcgi_get_cookies",1);
 	static var hxfcgi_setCookie = Web.load("hxfcgi_set_cookie",3);
+	static var _base_decode = Lib.load("std","base_decode",2);
 
 	
 	public static function init() {
@@ -229,7 +230,17 @@ class Web {
 		Returns an object with the authorization sent by the client (Basic scheme only).
 	**/
 	public static function getAuthorization() : { user : String, pass : String } {
-		throw "not implemented";
+		var h = getClientHeader("Authorization");
+		var reg = ~/^Basic ([^=]+)=*$/;
+		if( h != null && reg.match(h) ){
+			var val = reg.matched(1);
+			untyped val = new String(_base_decode(val,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"));
+			var a = val.split(":");
+			if( a.length != 2 ){
+				throw "Unable to decode authorization.";
+			}
+			return {user: a[0],pass: a[1]};
+		}
 		return null;
 	}
 
