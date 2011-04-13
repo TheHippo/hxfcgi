@@ -275,12 +275,9 @@ class Web {
 	}
 
 	/**
-		Flush the data sent to the client. By default on Apache, outgoing data is buffered so
-		this can be useful for displaying some long operation progress.
+		Flush the data sent to the client. Not supported. 
 	**/
 	public static function flush() : Void {
-		throw "not implemented";
-		return null;
 	}
 
 	/**
