@@ -22,18 +22,18 @@ clean:
 all: clean hxfcgi neko
 
 neko:
-	ifdef HXCPP_M64
+ifdef HXCPP_M64
 	haxe -D HXCPP_M64 neko.hxml
-	else
+else
 	haxe neko.hxml
-	endif
+endif
 	nekotools boot bin/test.n
 	mv bin/test bin/test.fcgi
 	
 cpp:
-	ifdef HXCPP_M64
+ifdef HXCPP_M64
 	haxe -D HXCPP_M64 cpp.hxml
-	else
+else
 	haxe cpp.hxml
-	endif
+endif
 	mv bin/Test bin/test.fcgi
