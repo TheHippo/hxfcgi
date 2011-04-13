@@ -13,7 +13,7 @@ namespace hxfcgi {
 	string Data::getPostData() {
 		int length = getPostLength();
 		char c[length];
-		fgets(c,length+1,stdin);
+		FCGI_fgets(c,length+1,stdin);
 		string data(c);
 		return data;
 	}
