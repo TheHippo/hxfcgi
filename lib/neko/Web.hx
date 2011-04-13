@@ -234,7 +234,7 @@ class Web {
 		var reg = ~/^Basic ([^=]+)=*$/;
 		if( h != null && reg.match(h) ){
 			var val = reg.matched(1);
-			untyped val = new String(_base_decode(Lib.haxeToNeko(val),Lib.haxeToNeko(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")));
+			untyped val = new String(_base_decode(Lib.haxeToNeko(val),Lib.haxeToNeko("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")));
 			var a = val.split(":");
 			if( a.length != 2 ){
 				throw "Unable to decode authorization.";
