@@ -33,9 +33,9 @@ namespace hxfcgi {
 	void Request::printHeaders() {
 		map<string,string>::iterator iter;
 		for (iter = header.begin(); iter != header.end(); iter++) {
-			printf("%s: %s\r\n",iter->first.c_str(),iter->second.c_str());
+			FCGI_printf("%s: %s\r\n",iter->first.c_str(),iter->second.c_str());
 		}
-		printf("\r\n");
+		FCGI_printf("\r\n");
 		header_sent = true;
 	}
 	
@@ -46,7 +46,7 @@ namespace hxfcgi {
 	void Request::print(string msg) {
 		if (header_sent==false)
 			printHeaders();
-		printf("%s",msg.c_str());
+		FCGI_printf("%s",msg.c_str());
 	}
 	
 	void Request::setReturnCode(int code) {
