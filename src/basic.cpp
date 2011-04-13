@@ -6,6 +6,11 @@
 #include <algorithm>
 #include "basic.h"
 
+#if defined(__APPLE__)
+#include <crt_externs.h>
+#define environ (*_NSGetEnviron())
+#endif
+
 using namespace std;
 
 namespace hxfcgi {
