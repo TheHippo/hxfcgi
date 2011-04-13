@@ -241,6 +241,7 @@ class Web {
 			}
 			return {user: a[0],pass: a[1]};
 		}
+		return null;
 	}
 
 	/**
