@@ -50,6 +50,7 @@ class Web {
 	static var hxfcgi_getParamsString = Web.load("hxfcgi_get_params_string",1);
 	static var hxfcgi_getParams = Web.load("hxfcgi_get_params",1);
 	static var hxfcgi_log = Web.load("hxfcgi_log",2);
+	static var hxfcgi_getCookies = Web.load("hxfcgi_get_cookies",1);
 
 	
 	public static function init() {
@@ -192,8 +193,13 @@ class Web {
 		Modifying the hashtable will not modify the cookie, use setCookie instead.
 	**/
 	public static function getCookies() {
-		throw "not implemented";
-		return null;
+		var p:Array<Dynamic> = Web.hxfcgi_getCookies(Web.request);
+                var h = new Hash<String>();
+                while( p != null ) {
+                        h.set(p[0],p[1]);
+                        p = p[2];
+                }
+                return h;
 	}
 
 
