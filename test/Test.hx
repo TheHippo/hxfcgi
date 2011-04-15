@@ -20,7 +20,7 @@ class Test {
 	static function run() {
 		Web.setHeader("X-Power-By","hxFCGI");
 //		Web.setHeader("Content-type","text/plain");
-		Web.setReturnCode(301);
+		Web.setReturnCode(503);
 		Web.setCookie("test","hxfcgi"+id,null,null,"/",false);
 		Lib.print("<html><head></head><body><pre>");
 		Lib.println(id++);
@@ -41,6 +41,7 @@ class Test {
 			var post = Web.getPostData();
 			trace(post.length+":"+post);
 		}
+		Web.flush();
 		trace(Web.getParamsString());
 		var params = Web.getParams();
 		trace(params);

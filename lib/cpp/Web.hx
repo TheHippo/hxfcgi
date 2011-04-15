@@ -50,6 +50,7 @@ class Web {
 	static var hxfcgi_getParamsString = Web.load("hxfcgi_get_params_string",1);
 	static var hxfcgi_getParams = Web.load("hxfcgi_get_params",1);
 	static var hxfcgi_log = Web.load("hxfcgi_log",2);
+	static var hxfcgi_flush = Web.load("hxfcgi_flush",1);
 	static var hxfcgi_getCookies = Web.load("hxfcgi_get_cookies",1);
 	static var hxfcgi_setCookie = Web.load("hxfcgi_set_cookie",3);
 	static var _base_decode = Lib.load("std","base_decode",2);
@@ -285,9 +286,10 @@ class Web {
 	}
 
 	/**
-		Flush the data sent to the client. Not supported.
+		Flush the data sent to the client. 
 	**/
 	public static function flush() : Void {
+		Web.hxfcgi_flush(Web.request);
 	}
 
 	/**

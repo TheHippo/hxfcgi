@@ -52,6 +52,10 @@ namespace hxfcgi {
 	void Request::log(string msg) {
 		FCGI_fprintf(stderr, "%s",msg.c_str());
  	}
+
+	void Request::flush() {
+		FCGI_fflush(FCGI_stdout);
+ 	}
 	
 	void Request::setReturnCode(int code) {
 		header["Status"]=codeToHeader(code);
