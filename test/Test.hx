@@ -40,6 +40,7 @@ class Test {
 		if (Web.getMethod()=="POST") {
 			var post = Web.getPostData();
 			trace(post.length+":"+post);
+			trace(Web.getMultipart(65635));
 		}
 		Web.flush();
 		trace(Web.getParamsString());
@@ -49,7 +50,7 @@ class Test {
 			trace(k+": "+params.get(k));
 		}
 		Lib.print("</pre>");
-		Lib.print('<form action="?foo=bar&test=test" method="POST"><input type="text" name="text"/><input type="password" name="pass" /><input type="submit" /></form>');
+		Lib.print('<form action="?foo=bar&test=test" method="POST" enctype="multipart/form-data"><input type="text" name="text"/><input type="password" name="pass" /><input type="file" name"file" /><input type="submit" /></form>');
 		Lib.print("</body></html>");
 
 	}

@@ -194,6 +194,101 @@ value hxfcgi_set_cookie(value hreq, value name, value v) {
 	return val_true;
 }
 
+value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
+	val_check_kind(hreq,hxRequest);
+	/*
+	hxfcgi::BasicData d;
+	value buf;
+	int len = 0;
+	mcontext *c = CONTEXT();
+	const char *ctype = d.getHeader("CONTENT_TYPE");
+	value boundstr;
+	val_check_function(onpart,2);
+	val_check_function(ondata,3);
+	buf = alloc_empty_string(BUFSIZE);
+	if( !ctype || strstr(ctype,"multipart/form-data") == NULL )
+		return val_null;
+	// extract boundary value
+	{
+		const char *boundary, *bend;
+		if( (boundary = strstr(ctype,"boundary=")) == NULL )
+			neko_error();
+		boundary += 9;
+		PARSE_HEADER(boundary,bend);
+		len = (int)(bend - boundary);
+		boundstr = alloc_empty_string(len+2);
+		if( val_strlen(boundstr) > BUFSIZE / 2 )
+			neko_error();
+		val_string(boundstr)[0] = '-';
+		val_string(boundstr)[1] = '-';
+		memcpy(val_string(boundstr)+2,boundary,len);
+	}
+	len = 0;
+    if( !ap_should_client_block(c->r) )
+		neko_error();
+	while( true ) {
+		char *name, *end_name, *filename, *end_file_name, *data;
+		int pos;
+		// refill buffer
+		// we assume here that the the whole multipart header can fit in the buffer
+		fill_buffer(c,buf,&len);
+		// is boundary at the beginning of buffer ?
+		if( len < val_strlen(boundstr) || memcmp(val_string(buf),val_string(boundstr),val_strlen(boundstr)) != 0 )
+			return discard_body(c);
+		name = memfind(val_string(buf),len,"Content-Disposition:");
+		if( name == NULL )
+			break;
+		name = memfind(name,len - (int)(name - val_string(buf)),"name=");
+		if( name == NULL )
+			return discard_body(c);
+		name += 5;
+		PARSE_HEADER(name,end_name);
+		data = memfind(end_name,len - (int)(end_name - val_string(buf)),"\r\n\r\n");
+		if( data == NULL )
+			return discard_body(c);
+		filename = memfind(name,(int)(data - name),"filename=");
+		if( filename != NULL ) {
+			filename += 9;
+			PARSE_HEADER(filename,end_file_name);
+		}
+		data += 4;
+		pos = (int)(data - val_string(buf));
+		// send part name
+		val_call2(onpart,copy_string(name,(int)(end_name - name)),filename?copy_string(filename,(int)(end_file_name - filename)):val_null);
+		// read data
+		while( true ) {
+			const char *boundary;
+			// recall buffer
+			memcpy(val_string(buf),val_string(buf)+pos,len - pos);
+			len -= pos;
+			pos = 0;
+			fill_buffer(c,buf,&len);
+			// lookup bounds
+			boundary = memfind(val_string(buf),len,val_string(boundstr));
+			if( boundary == NULL ) {
+				if( len == 0 )
+					return discard_body(c);
+				// send as much buffer as possible to client
+				if( len < BUFSIZE )
+					pos = len;
+				else
+					pos = len - val_strlen(boundstr) + 1;
+				val_call3(ondata,buf,alloc_int(0),alloc_int(pos));
+			} else {
+				// send remaining data
+				pos = (int)(boundary - val_string(buf));
+				val_call3(ondata,buf,alloc_int(0),alloc_int(pos-2));
+				// recall
+				memcpy(val_string(buf),val_string(buf)+pos,len - pos);
+				len -= pos;
+				break;
+			}
+		}
+	}	
+	*/
+	return val_null;
+}
+
 DEFINE_PRIM(hxfcgi_get_params,1);
 DEFINE_PRIM(hxfcgi_get_params_string,1);
 DEFINE_PRIM(hxfcgi_get_post_data,1);
@@ -211,3 +306,4 @@ DEFINE_PRIM(hxfcgi_flush,1);
 DEFINE_PRIM(hxfcgi_cache_module,1);
 DEFINE_PRIM(hxfcgi_get_cookies,1);
 DEFINE_PRIM(hxfcgi_set_cookie,3);
+DEFINE_PRIM(hxfcgi_parse_multipart,3);
