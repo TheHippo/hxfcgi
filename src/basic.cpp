@@ -36,19 +36,26 @@ namespace hxfcgi {
 			string *s = new string(*evn);
 			if (s->find("HTTP")==0)
 				header.push_back(s->substr(5));
+			else
+				header.push_back(s->c_str());
+		
 		}
 		return header;
 	}
 	
 	string BasicData::getHeader(string key) {
-		string rkey = "HTTP_";
-		transform(key.begin(),key.end(),key.begin(),::toupper);
-		rkey.append(key);
-		char *cret = getenv(rkey.c_str());
-		if (cret != NULL)
+		char *cret = getenv(key.c_str());
+		if (cret != NULL) {
 			return string(cret);
-		else
-			return string("");
+		} else {
+			string rkey = "HTTP_";
+			transform(key.begin(),key.end(),key.begin(),::toupper);
+			rkey.append(key);
+			cret = getenv(rkey.c_str());
+			if (cret != NULL)
+				return string(cret);
+		}
+		return string("");
 	}
 	
 	char* BasicData::getMethod() {
