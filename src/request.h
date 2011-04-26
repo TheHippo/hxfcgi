@@ -1,5 +1,6 @@
 #include <map>
 #include <string>
+#include <hx/CFFI.h>
 
 using namespace std;
 
@@ -14,11 +15,12 @@ namespace hxfcgi {
 			bool headerSent();
 			void printHeaders();
 			void addHeader(string type,string value);
-			void print(string msg);
+			void putchar(char c);
 			void log(string msg);
+			void flush();
 			void setReturnCode(int code);
 			string getPostData();
-			
+			void bufferFill(buffer buf,int *len);
 		
 		private:
 			map<string,string> header;

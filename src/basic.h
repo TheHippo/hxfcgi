@@ -15,7 +15,8 @@ namespace hxfcgi {
 			list<string> getAllHeaders();
 			string getHeader(string key);
 			char* getMethod();
-		
+		private:
+		string formatHeader(string h);
 	};
 	
 }
