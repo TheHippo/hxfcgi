@@ -10,7 +10,6 @@ namespace hxfcgi {
 		header_sent = false;
 		post_fetched = false;
 		postData = "";
-		header["Content-type"]="text/html";
 		if (!FCGI_Accept()==0) {
 			string error = "Could not generate Request";
 			throw error;
@@ -26,11 +25,26 @@ namespace hxfcgi {
 		return postData;
 	}
 	
+	void Request::bufferFill(buffer buf,int *len) {
+		Data d;
+		int pos = *len;
+		while( pos < BUFSIZE ) {
+			int k = d.getStdinData(buffer_data(buf)+pos,BUFSIZE-pos);
+			if( k == 0 )
+				break;
+			pos += k;
+		}
+		*len = pos;
+	}
+	
 	bool Request::headerSent() {
 		return header_sent;
 	}
 	
 	void Request::printHeaders() {
+		if (header_sent==true) return;
+		if(header.count("Content-type") == 0)
+			header["Content-type"]="text/html";
 		map<string,string>::iterator iter;
 		for (iter = header.begin(); iter != header.end(); iter++) {
 			FCGI_printf("%s: %s\r\n",iter->first.c_str(),iter->second.c_str());
@@ -42,12 +56,10 @@ namespace hxfcgi {
 	void Request::addHeader(string type,string value) {
 		header[type]=value;
 	}	
-	
-	void Request::print(string msg) {
-		if (header_sent==false)
-			printHeaders();
-		FCGI_printf("%s",msg.c_str());
-	}
+
+	void Request::putchar(char c) {
+		FCGI_putchar(c);
+ 	}
 
 	void Request::log(string msg) {
 		FCGI_fprintf(stderr, "%s",msg.c_str());

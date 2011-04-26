@@ -34,7 +34,6 @@ using StringTools;
 
 class Web {
 
-	public static var request:Dynamic;
 	
 	static var hxfcgi_createRequest = Web.load("hxfcgi_create_request",0);
 	static var hxfcgi_addHeader = Web.load("hxfcgi_add_header",3);
@@ -53,16 +52,17 @@ class Web {
 	static var hxfcgi_flush = Web.load("hxfcgi_flush",1);
 	static var hxfcgi_getCookies = Web.load("hxfcgi_get_cookies",1);
 	static var hxfcgi_setCookie = Web.load("hxfcgi_set_cookie",3);
+	static var hxfcgi_parseMultipart = Web.load("hxfcgi_parse_multipart",3);
 	static var _base_decode = Lib.load("std","base_decode",2);
 
-	
+	public static var request:Dynamic = init();
+
 	public static function init() {
-		Web.request = Web.hxfcgi_createRequest();
 		haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
 			Lib.print(info.fileName+":"+info.lineNumber+": "+Std.string(v)+"\n");
 		}
-	}
-	
+		return Web.hxfcgi_createRequest();
+	}	
 	/**
 		Returns the GET and POST parameters.
 	**/
@@ -187,7 +187,9 @@ class Web {
 		methods.
 	**/
 	public static function getPostData():String {
-		return Web.hxfcgi_getPostData(Web.request);
+		var ret:String = Web.hxfcgi_getPostData(Web.request);
+		if(ret.length == 0) return null;
+		return ret;
 	}
 
 	/**
@@ -249,6 +251,7 @@ class Web {
 	**/
 	public static function getCwd():String {
 		var f =  Sys.getEnv('SCRIPT_FILENAME');
+		if(f == null || f.length == 0) return null; 
 		return f.substr(0,f.lastIndexOf('/')+1);
 	}
 
@@ -270,8 +273,26 @@ class Web {
 		cannot exceed the maximum size specified.
 	**/
 	public static function getMultipart( maxSize : Int ) : Hash<String> {
-		throw "not implemented";
-		return null;
+		var h = new Hash();
+		var buf : haxe.io.BytesBuffer = null;
+		var curname = null;
+		parseMultipart(function(p,_) {
+			if( curname != null )
+				h.set(curname,buf.getBytes().toString());
+			curname = p;
+			buf = new haxe.io.BytesBuffer();
+			maxSize -= p.length;
+			if( maxSize < 0 )
+				throw "Maximum size reached";
+		},function(str : haxe.io.Bytes,pos,len) {
+			maxSize -= len;
+			if( maxSize < 0 )
+				throw "Maximum size reached";
+			buf.addBytes(str,pos,len);
+		});
+		if( curname != null )
+			h.set(curname,buf.getBytes().toString());
+		return h;
 	}
 
 	/**
@@ -281,8 +302,10 @@ class Web {
 		directly save the data on hard drive in the case of a file upload.
 	**/
 	public static function parseMultipart( onPart : String -> String -> Void, onData : haxe.io.Bytes -> Int -> Int -> Void ) : Void {
-		throw "not implemented";
-		return null;
+		Web.hxfcgi_parseMultipart(Web.request,
+			function(p,f) { onPart(p,f); },
+			function(buf,pos,len) { onData(haxe.io.Bytes.ofData(buf),pos,len); }
+		);
 	}
 
 	/**
