@@ -25,6 +25,18 @@ namespace hxfcgi {
 		return postData;
 	}
 	
+	void Request::bufferFill(buffer buf,int *len) {
+		Data d;
+		int pos = *len;
+		while( pos < BUFSIZE ) {
+			int k = d.getStdinData(buffer_data(buf)+pos,BUFSIZE-pos);
+			if( k == 0 )
+				break;
+			pos += k;
+		}
+		*len = pos;
+	}
+	
 	bool Request::headerSent() {
 		return header_sent;
 	}

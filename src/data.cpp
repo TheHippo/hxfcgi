@@ -27,6 +27,10 @@ namespace hxfcgi {
 		return data;
 	}
 	
+	int Data::getStdinData(char* buf, int len) {
+		return FCGI_fread(buf,1,len,FCGI_stdin);
+	}
+	
 	string Data::getParamsString() {
 		string ret(getenv("QUERY_STRING"));
 		return ret;
