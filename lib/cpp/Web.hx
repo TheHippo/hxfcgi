@@ -188,7 +188,9 @@ class Web {
 		methods.
 	**/
 	public static function getPostData():String {
-		return Web.hxfcgi_getPostData(Web.request);
+		var ret:String = Web.hxfcgi_getPostData(Web.request);
+		if(ret.length == 0) return null;
+		return ret;
 	}
 
 	/**

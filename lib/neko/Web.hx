@@ -187,8 +187,10 @@ class Web {
 		case, you will have to use [getMultipart] or [parseMultipart]
 		methods.
 	**/
-	public static function getPostData():String {
-		return Lib.nekoToHaxe(Web.hxfcgi_getPostData(Web.request));
+	public static function getPostData():Null<String> {
+		var ret:String = Lib.nekoToHaxe(Web.hxfcgi_getPostData(Web.request));
+		if(ret.length == 0) return null;
+		return ret;
 	}
 
 	/**
