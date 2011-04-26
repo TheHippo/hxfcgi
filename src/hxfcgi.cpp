@@ -159,7 +159,7 @@ value hxfcgi_get_cookies(value hreq) {
         string ret = d.getHeader("COOKIE");
         if (ret.compare("")==0)
                 return val_null;
-	const char *k = ret.c_str();
+	char *k = (char*)ret.c_str();
         char *start, *end;
 	value p = val_null, tmp;
         while( (start = strchr(k,'=')) != NULL ) {
