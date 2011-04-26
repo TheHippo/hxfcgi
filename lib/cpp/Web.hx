@@ -77,7 +77,7 @@ class Web {
 	/**
 		Returns an Array of Strings built using GET / POST values.
 		If you have in your URL the parameters [a[]=foo;a[]=hello;a[5]=bar;a[3]=baz] then
-		[neko.Web.getParamValues("a")] will return [["foo","hello",null,"baz",null,"bar"]]
+		[cpp.Web.getParamValues("a")] will return [["foo","hello",null,"baz",null,"bar"]]
 	**/
 	public static function getParamValues( param : String ) : Array<String> {
 		var reg = new EReg("^"+param+"(\\[|%5B)([0-9]*?)(\\]|%5D)=(.*?)$", "");
@@ -316,14 +316,14 @@ class Web {
 	}
 
 	/**
-		Get the HTTP method used by the client. This api requires Neko 1.7.1+
+		Get the HTTP method used by the client.
 	**/
 	public static function getMethod() : String {
 		return Web.hxfcgi_getMethod(Web.request);
 	}
 
 	/**
-		Write a message into the web server log file. This api requires Neko 1.7.1+
+		Write a message into the web server log file.
 	**/
 	public static function logMessage( msg : String ) {
 		Web.hxfcgi_log(Web.request,msg);

@@ -47,8 +47,7 @@ namespace hxfcgi {
 		std::string::size_type pos = h.find("_");
 		if(pos != string::npos) 
 			h.replace(pos, 1, "-"); 
-		for (std::string::size_type j=1; j<h.length(); ++j)
-		{
+		for (std::string::size_type j=1; j<h.length(); ++j)	{
 			if(j != pos && j != pos+1) 
 				h[j]=tolower(h[j]);
 		} 
@@ -63,7 +62,8 @@ namespace hxfcgi {
 		char *cret = getenv(key.c_str());
 		if (cret != NULL) {
 			return string(cret);
-		} else {
+		}
+		else {
 			string rkey = "HTTP_";
 			rkey.append(key);
 			cret = getenv(rkey.c_str());

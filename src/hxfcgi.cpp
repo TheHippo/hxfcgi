@@ -165,43 +165,43 @@ value hxfcgi_get_params(value hreq) {
 value hxfcgi_get_cookies(value hreq) {
 	val_check_kind(hreq,hxRequest);
 	hxfcgi::BasicData d;
-        string ret = d.getHeader("COOKIE");
-        if (ret.compare("")==0)
-                return val_null;
+	string ret = d.getHeader("COOKIE");
+	if (ret.compare("")==0)
+	return val_null;
 	char *k = (char*)ret.c_str();
-        char *start, *end;
+	char *start, *end;
 	value p = val_null, tmp;
-        while( (start = strchr(k,'=')) != NULL ) {
-                start++;
-                end = start;
-                while( *end != 0 && *end != '\r' && *end != '\n' && *end != ';' )
-                        end++;
-                tmp = alloc_array(3);
+	while( (start = strchr(k,'=')) != NULL ) {
+		start++;
+		end = start;
+		while( *end != 0 && *end != '\r' && *end != '\n' && *end != ';' )
+			end++;
+		tmp = alloc_array(3);
 		val_array_set_i(tmp,0,copy_string(k,(int)(start-k-1)));
-                val_array_set_i(tmp,1,copy_string(start,(int)(end-start)));
-                val_array_set_i(tmp,2,p);
-                p = tmp;
-                if( *end != ';' || end[1] != ' ' )
-                        break;
-                k = end + 2;
-        }
-        return p;
+		val_array_set_i(tmp,1,copy_string(start,(int)(end-start)));
+		val_array_set_i(tmp,2,p);
+		p = tmp;
+		if( *end != ';' || end[1] != ' ' )
+			break;
+		k = end + 2;
+	}
+	return p;
 }
 
 value hxfcgi_set_cookie(value hreq, value name, value v) {
 	val_check_kind(hreq,hxRequest);
 	val_check(name,string);
-        val_check(v,string);
+	val_check(v,string);
 	buffer b;
-        value str;
+	value str;
 	hxfcgi::Request *req = get_request(hreq);
-        b = alloc_buffer(NULL);
-        val_buffer(b,name);
-        buffer_append(b,"=");
-        val_buffer(b,v);
-        buffer_append(b,";");
-        str = buffer_to_string(b);
-        req->addHeader("Set-Cookie",val_string(str));
+	b = alloc_buffer(NULL);
+	val_buffer(b,name);
+	buffer_append(b,"=");
+	val_buffer(b,v);
+	buffer_append(b,";");
+	str = buffer_to_string(b);
+	req->addHeader("Set-Cookie",val_string(str));
 	return val_true;
 }
 

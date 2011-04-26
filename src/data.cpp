@@ -15,7 +15,8 @@ namespace hxfcgi {
 		if(length == 0) return "";
 		if(length > 262144) length = 262144;
 		string ctype(getenv("CONTENT_TYPE"));
-		if(ctype.find("multipart/form-data") == 0) return "";
+		if(ctype.find("multipart/form-data") == 0)
+			return "";
 		char c[length];
 		char ch;
 		for(int i=0;i<= length; i++) {
