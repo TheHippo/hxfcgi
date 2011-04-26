@@ -10,7 +10,6 @@ namespace hxfcgi {
 		header_sent = false;
 		post_fetched = false;
 		postData = "";
-		header["Content-type"]="text/html";
 		if (!FCGI_Accept()==0) {
 			string error = "Could not generate Request";
 			throw error;
@@ -31,6 +30,9 @@ namespace hxfcgi {
 	}
 	
 	void Request::printHeaders() {
+		if (header_sent==true) return;
+		if(header.count("Content-type") == 0)
+			header["Content-type"]="text/html";
 		map<string,string>::iterator iter;
 		for (iter = header.begin(); iter != header.end(); iter++) {
 			FCGI_printf("%s: %s\r\n",iter->first.c_str(),iter->second.c_str());
@@ -42,7 +44,7 @@ namespace hxfcgi {
 	void Request::addHeader(string type,string value) {
 		header[type]=value;
 	}	
-	
+
 	void Request::print(string msg) {
 		if (header_sent==false)
 			printHeaders();
