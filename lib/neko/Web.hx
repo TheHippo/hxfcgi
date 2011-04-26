@@ -33,8 +33,6 @@ using StringTools;
 using Lambda;
 
 class Web {
-
-	public static var request:Dynamic;
 	
 	static var hxfcgi_createRequest = Web.load("hxfcgi_create_request",0);
 	static var hxfcgi_addHeader = Web.load("hxfcgi_add_header",3);
@@ -56,12 +54,14 @@ class Web {
 	static var hxfcgi_parseMultipart = Web.load("hxfcgi_parse_multipart",3);
 	static var _base_decode = Lib.load("std","base_decode",2);
 
+
+	public static var request:Dynamic = init();
 	
 	public static function init() {
-		Web.request = Web.hxfcgi_createRequest();
 	haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
 			Lib.print(info.fileName+":"+info.lineNumber+": "+Std.string(v)+"\n");
 		}
+		return Web.hxfcgi_createRequest();
 	}
 	
 	/**
