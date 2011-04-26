@@ -250,6 +250,7 @@ class Web {
 	**/
 	public static function getCwd():String {
 		var f =  Sys.getEnv('SCRIPT_FILENAME');
+		if(f == null || f.length == 0) return null; 
 		return f.substr(0,f.lastIndexOf('/')+1);
 	}
 
