@@ -12,10 +12,23 @@ namespace hxfcgi {
 	
 	string Data::getPostData() {
 		int length = getPostLength();
+		if(length == 0) return "";
+		if(length > 262144) length = 262144;
+		string ctype(getenv("CONTENT_TYPE"));
+		if(ctype.find("multipart/form-data") == 0) return "";
 		char c[length];
-		FCGI_fgets(c,length+1,stdin);
-		string data(c);
+		char ch;
+		for(int i=0;i<= length; i++) {
+			ch = FCGI_fgetc(FCGI_stdin);
+			if( ch == EOF ) break;
+			c[i] = ch;
+		}
+		string data(c,length);
 		return data;
+	}
+	
+	int Data::getStdinData(char* buf, int len) {
+		return FCGI_fread(buf,1,len,FCGI_stdin);
 	}
 	
 	string Data::getParamsString() {
