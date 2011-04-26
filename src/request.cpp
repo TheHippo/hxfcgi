@@ -45,11 +45,9 @@ namespace hxfcgi {
 		header[type]=value;
 	}	
 
-	void Request::print(string msg) {
-		if (header_sent==false)
-			printHeaders();
-		FCGI_printf("%s",msg.c_str());
-	}
+	void Request::putchar(char c) {
+		FCGI_putchar(c);
+ 	}
 
 	void Request::log(string msg) {
 		FCGI_fprintf(stderr, "%s",msg.c_str());

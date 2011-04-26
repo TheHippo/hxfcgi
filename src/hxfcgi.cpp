@@ -39,7 +39,9 @@ value hxfcgi_add_header(value hreq,value type,value value) {
 value hxfcgi_print(value hreq,value msg) {
 	val_check(msg,string);
 	hxfcgi::Request *req = get_request(hreq);
-	req->print(val_string(msg));
+	req->printHeaders();
+	for (int i = 0; i < val_strlen(msg);i++)
+		req->putchar(val_string(msg)[i]);
 	return val_null;
 }
 
