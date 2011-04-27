@@ -115,14 +115,14 @@ class Web {
 		Surprisingly returns the client IP address.
 	**/
 	public static function getClientIP():String {
-		return Web.hxfcgi_getClientIP(Web.request);
+		return Lib.nekoToHaxe(Web.hxfcgi_getClientIP(Web.request));
 	}
 
 	/**
 		Returns the original request URL (before any server internal redirections)
 	**/
 	public static function getURI():String {
-		return Web.hxfcgi_getURI(Web.request);
+		return Lib.nekoToHaxe(Web.hxfcgi_getURI(Web.request));
 	}
 
 	/**
