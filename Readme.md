@@ -3,8 +3,7 @@ CGI/FastCGI Wrapper for nekoVM and the haxe cpp target
 
 Current status
 --------------
-* All methods implemented, cpp target fully functional.
-* `getMultipart()`and `parseMultipart()` do not work for neko target (api_buffer_size and api_buffer_data are not implemented yet in nekoapi.ndll from hxcpp project).
+* All methods implemented.
 
 Differences to haxe Web API:
 ----------------------------
@@ -15,9 +14,7 @@ Differences to haxe Web API:
 Status
 ------
 
-*Not Implemented (Neko only!)*:
-* getMultipart
-* parseMultipart
+*Not Implemented*:
 
 *Implemented*:
 

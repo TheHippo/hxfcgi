@@ -317,6 +317,116 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 	return val_null;
 }
 
+value hxfcgi_parse_multipart_neko(value hreq, value onpart, value ondata ) {
+	val_check_kind(hreq,hxRequest);
+	val_check_function(onpart,2);
+	val_check_function(ondata,3);
+	hxfcgi::Request *req = get_request(hreq);
+	char *buf;
+	int len = 0;
+	char *boundstr;
+	hxfcgi::BasicData b;
+	string ctype = b.getHeader("CONTENT_TYPE");
+	if(ctype.find("multipart/form-data") != 0)
+		return val_null;
+	// extract boundary value
+	{
+		const char *boundary, *bend;
+		if( (boundary = strstr(ctype.c_str(),"boundary=")) == NULL )
+			neko_error();
+		boundary += 9;
+		PARSE_HEADER(boundary,bend);
+		len = (int)(bend - boundary);
+		boundstr = (char *) malloc(sizeof(char) * (len+2));
+		if( strlen(boundstr) > BUFSIZE / 2 )
+			neko_error();
+		
+		boundstr[0] = '-';
+		boundstr[1] = '-';
+		memcpy(boundstr+2,boundary,len);
+		boundstr[len+2] = 0;
+	}
+	
+	len = 0;
+	buf = (char *) malloc(sizeof(char) * (BUFSIZE));
+	while( true ) {
+		char *name, *end_name, *filename, *end_file_name, *data;
+		int pos;
+		// refill buffer
+		// we assume here that the the whole multipart header can fit in the buffer
+		req->charBufferFill(buf,&len);
+		// is boundary at the beginning of buffer ?
+		if( len < (int) strlen(boundstr) || memcmp(buf,boundstr,strlen(boundstr)) != 0 ) {
+			free(boundstr);
+			free(buf);
+			return val_null;
+		}		
+		name = memfind(buf,len,"Content-Disposition:");
+		if( name == NULL )
+			break;
+		name = memfind(name,len - (int)(name - buf),"name=");
+		if( name == NULL ) {
+			free(boundstr);
+			free(buf);
+			return val_null;
+		}
+		name += 5;
+		PARSE_HEADER(name,end_name);
+		data = memfind(end_name,len - (int)(end_name - buf),"\r\n\r\n");
+		if( data == NULL ) {
+			free(boundstr);
+			free(buf);
+			return val_null;
+		}
+		filename = memfind(name,(int)(data - name),"filename=");
+		if( filename != NULL ) {
+			filename += 9;
+			PARSE_HEADER(filename,end_file_name);
+		}
+		data += 4;
+		pos = (int)(data - buf);
+		// send part name
+		val_call2(onpart,copy_string(name,(int)(end_name - name)),filename?copy_string(filename,(int)(end_file_name - filename)):val_null);
+		
+		
+		// read data
+		while( true ) {
+			const char *boundary;
+			// recall buffer
+			memcpy(buf,buf+pos,len - pos);
+			len -= pos;
+			pos = 0;
+			req->charBufferFill(buf,&len);
+			// lookup bounds
+			boundary = memfind(buf,len,boundstr);
+			if( boundary == NULL ) {
+				if( len == 0 ) {
+					free(boundstr);
+					free(buf);
+					return val_null;
+				}
+				// send as much buffer as possible to client
+				if( len < BUFSIZE )
+					pos = len;
+				else
+					pos = len - strlen(boundstr) + 1;
+				val_call3(ondata,copy_string(buf,pos),alloc_int(0),alloc_int(pos));
+			} else {
+				// send remaining data
+				pos = (int)(boundary - buf);
+				val_call3(ondata,copy_string(buf,pos-2),alloc_int(0),alloc_int(pos-2));
+				// recall
+				memcpy(buf,buf+pos,len - pos);
+				len -= pos;
+				break;
+			}
+		}
+	}	
+	free(boundstr);
+	free(buf);
+	return val_null;
+}
+
 
 DEFINE_PRIM(hxfcgi_get_params,1);
 DEFINE_PRIM(hxfcgi_get_params_string,1);
@@ -336,3 +446,4 @@ DEFINE_PRIM(hxfcgi_cache_module,1);
 DEFINE_PRIM(hxfcgi_get_cookies,1);
 DEFINE_PRIM(hxfcgi_set_cookie,3);
 DEFINE_PRIM(hxfcgi_parse_multipart,3);
+DEFINE_PRIM(hxfcgi_parse_multipart_neko,3);

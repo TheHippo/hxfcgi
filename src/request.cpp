@@ -36,6 +36,18 @@ namespace hxfcgi {
 		}
 		*len = pos;
 	}
+
+	void Request::charBufferFill(char *buf,int *len) {
+		Data d;
+		int pos = *len;
+		while( pos < BUFSIZE ) {
+			int k = d.getStdinData(buf+pos,BUFSIZE-pos);
+			if( k == 0 )
+				break;
+			pos += k;
+		}
+		*len = pos;
+	}
 	
 	bool Request::headerSent() {
 		return header_sent;
@@ -43,7 +55,7 @@ namespace hxfcgi {
 	
 	void Request::printHeaders() {
 		if (header_sent==true) return;
-		if(header.count("Content-type") == 0)
+		if(header.count("Content-type") == 0 && header.count("Content-Type") == 0)
 			header["Content-type"]="text/html";
 		map<string,string>::iterator iter;
 		for (iter = header.begin(); iter != header.end(); iter++) {

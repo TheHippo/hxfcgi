@@ -51,7 +51,7 @@ class Web {
 	static var hxfcgi_flush = Web.load("hxfcgi_flush",1);
 	static var hxfcgi_getCookies = Web.load("hxfcgi_get_cookies",1);
 	static var hxfcgi_setCookie = Web.load("hxfcgi_set_cookie",3);
-	static var hxfcgi_parseMultipart = Web.load("hxfcgi_parse_multipart",3);
+	static var hxfcgi_parseMultipart = Web.load("hxfcgi_parse_multipart_neko",3);
 	static var _base_decode = Lib.load("std","base_decode",2);
 
 
