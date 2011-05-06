@@ -337,7 +337,7 @@ value hxfcgi_parse_multipart_neko(value hreq, value onpart, value ondata ) {
 		boundary += 9;
 		PARSE_HEADER(boundary,bend);
 		len = (int)(bend - boundary);
-		boundstr = (char *) malloc(sizeof(char) * (len+2));
+		boundstr = (char *) malloc(sizeof(char) * (len+3));
 		if( strlen(boundstr) > BUFSIZE / 2 )
 			neko_error();
 		
