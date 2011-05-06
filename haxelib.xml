@@ -1,0 +1,12 @@
+<project name="hxfcgi" url="https://github.com/TheHippo/hxfcgi" license="LGPL">
+    <user name="TheHippo"/>
+    <tag v="neko"/>
+    <tag v="cpp"/>
+    <tag v="cgi"/>
+    <tag v="web"/>
+    <tag v="cgi"/>
+    <tag v="fcgi"/>
+    <tag v="fastcgi"/>
+    <description>CGI/FastCGI Wrapper for nekoVM and the haxe cpp target</description>
+    <version name="0.1">Complete Web Api implemented, first release</version>
+</project>
