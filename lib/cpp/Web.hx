@@ -70,7 +70,7 @@ class Web {
 		var ret = new Hash<String>();
 		var a:Array<String> = Web.hxfcgi_getParams(Web.request);
 		for (x in 0...(a.length >> 1))
-			ret.set(a[2*x],(a[2*x+1].length > 0 ) ? StringTools.urlDecode(a[2*x+1]) : null);
+			if(a[2*x].length > 0) ret.set(a[2*x],(a[2*x+1].length > 0 ) ? StringTools.urlDecode(a[2*x+1]) : null);
 		return ret;
 	}
 
