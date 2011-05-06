@@ -1,10 +1,10 @@
+#ifndef HXFCGI_BASICDATA
+#define HXFCGI_BASICDATA
+
 #include <string>
 #include <list>
 
 using namespace std;
-
-#ifndef HXFCGI_BASICDATA
-#define HXFCGI_BASICDATA
 
 namespace hxfcgi {
 	

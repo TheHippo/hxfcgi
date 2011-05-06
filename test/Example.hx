@@ -8,8 +8,10 @@ import cpp.Lib;
 
 class Example {
 
-	static function main()
-		Web.cacheModule(run)
+	static function main() {
+		Web.cacheModule(run);
+		run();
+	}
 	
 	static function run() {
 		Web.setHeader("Content-type","text/plain");

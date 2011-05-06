@@ -50,7 +50,7 @@ value hxfcgi_print(value hreq,value msg) {
 	hxfcgi::Request *req = get_request(hreq);
 	req->printHeaders();
 	for (int i = 0; i < val_strlen(msg);i++)
-		req->putchar(val_string(msg)[i]);
+		req->pchar(val_string(msg)[i]);
 	return val_null;
 }
 

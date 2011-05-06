@@ -69,7 +69,7 @@ namespace hxfcgi {
 		header[type]=value;
 	}	
 
-	void Request::putchar(char c) {
+	void Request::pchar(char c) {
 		FCGI_putchar(c);
  	}
 

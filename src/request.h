@@ -1,11 +1,11 @@
+#ifndef HXFCGI_REQUEST
+#define HXFCGI_REQUEST
+
 #include <map>
 #include <string>
 #include <hx/CFFI.h>
 
 using namespace std;
-
-#ifndef HXFCGI_REQUEST
-#define HXFCGI_REQUEST
 
 namespace hxfcgi {
 	
@@ -15,7 +15,7 @@ namespace hxfcgi {
 			bool headerSent();
 			void printHeaders();
 			void addHeader(string type,string value);
-			void putchar(char c);
+			void pchar(char c);
 			void log(string msg);
 			void flush();
 			void setReturnCode(int code);

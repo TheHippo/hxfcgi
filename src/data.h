@@ -1,11 +1,11 @@
+#ifndef HXFCGI_DATA
+#define HXFCGI_DATA
+
 #include <map>
 #include <string>
 #include "request.h"
 
 using namespace std;
-
-#ifndef HXFCGI_DATA
-#define HXFCGI_DATA
 
 #define BUFSIZE 1024
 
