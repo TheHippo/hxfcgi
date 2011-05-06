@@ -82,7 +82,7 @@ namespace hxfcgi {
 		if (pos != string::npos)
 			return data.substr(0,pos);
 		else
-			return "";
+			return data;
 	}
 	
 	string Data::parseValue(string data) {
