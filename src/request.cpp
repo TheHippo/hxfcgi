@@ -32,6 +32,7 @@ namespace hxfcgi {
 		post_fetched = false;
 		postData = "";
 		if (!FCGI_Accept()==0) {
+			if(FCGX_IsCGI()) exit(1);
 			string error = "Could not generate Request";
 			throw error;
 		}
