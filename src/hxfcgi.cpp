@@ -282,7 +282,7 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 		// we assume here that the the whole multipart header can fit in the buffer
 		req->bufferFill(buf,&len);
 		// is boundary at the beginning of buffer ?
-		if( len < strlen(buffer_data(boundstr)) || memcmp(buffer_data(buf),buffer_data(boundstr),strlen(buffer_data(boundstr))) != 0 )
+		if( len < (int) strlen(buffer_data(boundstr)) || memcmp(buffer_data(buf),buffer_data(boundstr),strlen(buffer_data(boundstr))) != 0 )
 			return val_null;
 		name = memfind(buffer_data(buf),len,"Content-Disposition:");
 		if( name == NULL )
@@ -299,11 +299,14 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 		if( filename != NULL ) {
 			filename += 9;
 			PARSE_HEADER(filename,end_file_name);
+			// send part name
+			val_call2(onpart,copy_string(name,(int)(end_name - name)),copy_string(filename,(int)(end_file_name - filename)));
+		} else {
+			// send part name
+			val_call2(onpart,copy_string(name,(int)(end_name - name)),val_null);
 		}
 		data += 4;
 		pos = (int)(data - buffer_data(buf));
-		// send part name
-		val_call2(onpart,copy_string(name,(int)(end_name - name)),filename?copy_string(filename,(int)(end_file_name - filename)):val_null);
 	 
 	 
 		// read data
