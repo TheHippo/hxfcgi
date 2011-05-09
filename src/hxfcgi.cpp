@@ -264,13 +264,14 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 		boundary += 9;
 		PARSE_HEADER(boundary,bend);
 		len = (int)(bend - boundary);
-		boundstr = alloc_buffer_len(len+2);
-		if( buffer_size(boundstr) > BUFSIZE / 2 )
+		boundstr = alloc_buffer_len(len+3);
+		if( strlen(buffer_data(boundstr)) > BUFSIZE / 2 )
 			neko_error();
 		
 		buffer_data(boundstr)[0] = '-';
 		buffer_data(boundstr)[1] = '-';
 		memcpy(buffer_data(boundstr)+2,boundary,len);
+		buffer_data(boundstr)[len+2] = 0;
 	}
 	len = 0;
 	
@@ -281,7 +282,7 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 		// we assume here that the the whole multipart header can fit in the buffer
 		req->bufferFill(buf,&len);
 		// is boundary at the beginning of buffer ?
-		if( len < buffer_size(boundstr) || memcmp(buffer_data(buf),buffer_data(boundstr),buffer_size(boundstr)) != 0 )
+		if( len < strlen(buffer_data(boundstr)) || memcmp(buffer_data(buf),buffer_data(boundstr),strlen(buffer_data(boundstr))) != 0 )
 			return val_null;
 		name = memfind(buffer_data(buf),len,"Content-Disposition:");
 		if( name == NULL )
@@ -322,7 +323,7 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 				if( len < BUFSIZE )
 					pos = len;
 				else
-					pos = len - buffer_size(boundstr) + 1;
+					pos = len - strlen(buffer_data(boundstr)) + 1;
 				val_call3(ondata,buffer_val(buf),alloc_int(0),alloc_int(pos));
 			} else {
 				// send remaining data
@@ -375,7 +376,7 @@ value hxfcgi_parse_multipart_neko(value hreq, value onpart, value ondata ) {
 		int pos;
 		// refill buffer
 		// we assume here that the the whole multipart header can fit in the buffer
-		req->charBufferFill(buf,&len);
+		req->bufferFill(buf,&len);
 		// is boundary at the beginning of buffer ?
 		if( len < (int) strlen(boundstr) || memcmp(buf,boundstr,strlen(boundstr)) != 0 ) {
 			free(boundstr);
@@ -417,7 +418,7 @@ value hxfcgi_parse_multipart_neko(value hreq, value onpart, value ondata ) {
 			memcpy(buf,buf+pos,len - pos);
 			len -= pos;
 			pos = 0;
-			req->charBufferFill(buf,&len);
+			req->bufferFill(buf,&len);
 			// lookup bounds
 			boundary = memfind(buf,len,boundstr);
 			if( boundary == NULL ) {

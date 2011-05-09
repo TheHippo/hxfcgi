@@ -59,7 +59,7 @@ namespace hxfcgi {
 		*len = pos;
 	}
 
-	void Request::charBufferFill(char *buf,int *len) {
+	void Request::bufferFill(char *buf,int *len) {
 		Data d;
 		int pos = *len;
 		while( pos < BUFSIZE ) {

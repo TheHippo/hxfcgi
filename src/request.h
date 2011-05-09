@@ -42,7 +42,7 @@ namespace hxfcgi {
 			void setReturnCode(int code);
 			string getPostData();
 			void bufferFill(buffer buf,int *len);
-			void charBufferFill(char *buf,int *len);
+			void bufferFill(char *buf,int *len);
 		
 		private:
 			map<string,string> header;
