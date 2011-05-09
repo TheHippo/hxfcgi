@@ -1,7 +1,7 @@
 HXCPP_INCLUDE = $(shell sh -c 'haxelib path hxcpp | head -1')include/
 
 CC = g++
-CFLAGS = -O2 -Wall -shared -I$(HXCPP_INCLUDE) -D hxcpp
+CFLAGS = -O2 -s -Wall -shared -I$(HXCPP_INCLUDE) -D hxcpp
 ifdef HXCPP_M64
 CFLAGS += -D HXCPP_M64 -fPIC
 endif
