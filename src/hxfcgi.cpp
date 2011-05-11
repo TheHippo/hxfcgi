@@ -25,6 +25,7 @@
 #include "basic.h"
 #include "data.h"
 
+#include <fcgi_stdio.h>
 
 DEFINE_KIND(hxRequest);
 
@@ -39,7 +40,6 @@ cursor++; \
 while( *cursor != 0 && *cursor != '\r' && *cursor != '\n' && *cursor != '\t' ) \
 cursor++; \
 }
-
 
 inline hxfcgi::Request* get_request(value hreq) {
 	val_check_kind(hreq,hxRequest);
@@ -93,6 +93,7 @@ value hxfcgi_cache_module(value func) {
 	hxfcgi::Request *req;
 	while (true) {
 		try {
+			if(FCGX_IsCGI()) break;
 			req = new hxfcgi::Request();
 			val_call1(func,alloc_abstract(hxRequest,req));
 			delete req;

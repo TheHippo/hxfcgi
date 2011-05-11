@@ -11,7 +11,7 @@ class Test {
 	
 	static function main() {
 		Web.cacheModule(run);
-		run();
+		//run();
 	}
 	
 	static function run() {
