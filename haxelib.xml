@@ -7,5 +7,5 @@
     <tag v="fcgi"/>
     <tag v="fastcgi"/>
     <description>CGI/FastCGI Wrapper for nekoVM and the haxe cpp target</description>
-    <version name="0.1.1">Binaries for Linux 32/64 bit and Mac 32/64 bit</version>
+    <version name="0.1.2">small fixes for cachemodule, updated binaries</version>
 </project>
