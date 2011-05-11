@@ -58,7 +58,7 @@ class Web {
 	public static var request:Dynamic = init();
 	
 	public static function init() {
-	haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
+		haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
 			Lib.print(info.fileName+":"+info.lineNumber+": "+Std.string(v)+"\n");
 		}
 		return Web.hxfcgi_createRequest();
