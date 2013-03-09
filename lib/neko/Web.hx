@@ -68,7 +68,11 @@ class Web {
 		Returns the GET and POST parameters.
 	**/
 	public static function getParams() {
+		#if haxe3
+		var ret = new Map<String,String>();
+		#else
 		var ret = new Hash<String>();
+		#end
 		var a:Array<String> = Lib.nekoToHaxe(Web.hxfcgi_getParams(Web.request));
 		for (x in 0...(a.length >> 1))
 			ret.set(a[2*x],StringTools.urlDecode(a[2*x+1]));
@@ -199,7 +203,11 @@ class Web {
 	**/
 	public static function getCookies() {
 		var p:Array<Dynamic> = Lib.nekoToHaxe(Web.hxfcgi_getCookies(Web.request));
+                #if haxe3
+                var h = new Map<String,String>();
+                #else
                 var h = new Hash<String>();
+                #end
                 while( p != null ) {
                         h.set(p[0],p[1]);
                         p = p[2];
@@ -273,8 +281,13 @@ class Web {
 		Get the multipart parameters as an hashtable. The data
 		cannot exceed the maximum size specified.
 	**/
+	#if haxe3
+	public static function getMultipart( maxSize : Int ) : Map<String,String> {
+		var h = new Map();
+	#else
 	public static function getMultipart( maxSize : Int ) : Hash<String> {
 		var h = new Hash();
+	#end
 		var buf : haxe.io.BytesBuffer = null;
 		var curname = null;
 		parseMultipart(function(p,_) {
