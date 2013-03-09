@@ -1,9 +1,31 @@
+/*	
+ *  hxfcgi - CGI/FastCGI Wrapper for nekoVM and the haxe cpp target
+ *  Copyright (C) 2011 Philipp "TheHippo" Klose
+ *  Copyright (C) 2011 "KaalH!"
+ *
+ *  This file is part of hxfcgi.
+ *
+ *  hxfcgi is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as 
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  hxfcgi is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public 
+ *  License along with hxfcgi. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #define IMPLEMENT_API
 #include <hx/CFFI.h>
 #include "request.h"
 #include "basic.h"
 #include "data.h"
 
+#include <fcgi_stdio.h>
 
 DEFINE_KIND(hxRequest);
 
@@ -18,7 +40,6 @@ cursor++; \
 while( *cursor != 0 && *cursor != '\r' && *cursor != '\n' && *cursor != '\t' ) \
 cursor++; \
 }
-
 
 inline hxfcgi::Request* get_request(value hreq) {
 	val_check_kind(hreq,hxRequest);
@@ -50,7 +71,7 @@ value hxfcgi_print(value hreq,value msg) {
 	hxfcgi::Request *req = get_request(hreq);
 	req->printHeaders();
 	for (int i = 0; i < val_strlen(msg);i++)
-		req->putchar(val_string(msg)[i]);
+		req->pchar(val_string(msg)[i]);
 	return val_null;
 }
 
@@ -72,6 +93,7 @@ value hxfcgi_cache_module(value func) {
 	hxfcgi::Request *req;
 	while (true) {
 		try {
+			if(FCGX_IsCGI()) break;
 			req = new hxfcgi::Request();
 			val_call1(func,alloc_abstract(hxRequest,req));
 			delete req;
@@ -243,13 +265,14 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 		boundary += 9;
 		PARSE_HEADER(boundary,bend);
 		len = (int)(bend - boundary);
-		boundstr = alloc_buffer_len(len+2);
-		if( buffer_size(boundstr) > BUFSIZE / 2 )
+		boundstr = alloc_buffer_len(len+3);
+		if( strlen(buffer_data(boundstr)) > BUFSIZE / 2 )
 			neko_error();
 		
 		buffer_data(boundstr)[0] = '-';
 		buffer_data(boundstr)[1] = '-';
 		memcpy(buffer_data(boundstr)+2,boundary,len);
+		buffer_data(boundstr)[len+2] = 0;
 	}
 	len = 0;
 	
@@ -260,7 +283,7 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 		// we assume here that the the whole multipart header can fit in the buffer
 		req->bufferFill(buf,&len);
 		// is boundary at the beginning of buffer ?
-		if( len < buffer_size(boundstr) || memcmp(buffer_data(buf),buffer_data(boundstr),buffer_size(boundstr)) != 0 )
+		if( len < (int) strlen(buffer_data(boundstr)) || memcmp(buffer_data(buf),buffer_data(boundstr),strlen(buffer_data(boundstr))) != 0 )
 			return val_null;
 		name = memfind(buffer_data(buf),len,"Content-Disposition:");
 		if( name == NULL )
@@ -277,11 +300,14 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 		if( filename != NULL ) {
 			filename += 9;
 			PARSE_HEADER(filename,end_file_name);
+			// send part name
+			val_call2(onpart,copy_string(name,(int)(end_name - name)),copy_string(filename,(int)(end_file_name - filename)));
+		} else {
+			// send part name
+			val_call2(onpart,copy_string(name,(int)(end_name - name)),val_null);
 		}
 		data += 4;
 		pos = (int)(data - buffer_data(buf));
-		// send part name
-		val_call2(onpart,copy_string(name,(int)(end_name - name)),filename?copy_string(filename,(int)(end_file_name - filename)):val_null);
 	 
 	 
 		// read data
@@ -301,7 +327,7 @@ value hxfcgi_parse_multipart(value hreq, value onpart, value ondata ) {
 				if( len < BUFSIZE )
 					pos = len;
 				else
-					pos = len - buffer_size(boundstr) + 1;
+					pos = len - strlen(buffer_data(boundstr)) + 1;
 				val_call3(ondata,buffer_val(buf),alloc_int(0),alloc_int(pos));
 			} else {
 				// send remaining data
@@ -337,7 +363,7 @@ value hxfcgi_parse_multipart_neko(value hreq, value onpart, value ondata ) {
 		boundary += 9;
 		PARSE_HEADER(boundary,bend);
 		len = (int)(bend - boundary);
-		boundstr = (char *) malloc(sizeof(char) * (len+2));
+		boundstr = (char *) malloc(sizeof(char) * (len+3));
 		if( strlen(boundstr) > BUFSIZE / 2 )
 			neko_error();
 		
@@ -354,7 +380,7 @@ value hxfcgi_parse_multipart_neko(value hreq, value onpart, value ondata ) {
 		int pos;
 		// refill buffer
 		// we assume here that the the whole multipart header can fit in the buffer
-		req->charBufferFill(buf,&len);
+		req->bufferFill(buf,&len);
 		// is boundary at the beginning of buffer ?
 		if( len < (int) strlen(boundstr) || memcmp(buf,boundstr,strlen(boundstr)) != 0 ) {
 			free(boundstr);
@@ -396,7 +422,7 @@ value hxfcgi_parse_multipart_neko(value hreq, value onpart, value ondata ) {
 			memcpy(buf,buf+pos,len - pos);
 			len -= pos;
 			pos = 0;
-			req->charBufferFill(buf,&len);
+			req->bufferFill(buf,&len);
 			// lookup bounds
 			boundary = memfind(buf,len,boundstr);
 			if( boundary == NULL ) {

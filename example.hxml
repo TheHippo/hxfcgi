@@ -1,0 +1,7 @@
+-cp test
+-cp lib
+-D HXFCGI
+-main Example
+-neko bin/example.n
+-cmd nekotools boot bin/example.n
+

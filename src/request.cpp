@@ -1,3 +1,24 @@
+/*	
+ *  hxfcgi - CGI/FastCGI Wrapper for nekoVM and the haxe cpp target
+ *  Copyright (C) 2011 Philipp "TheHippo" Klose
+ *  Copyright (C) 2011 "KaalH!"
+ *
+ *  This file is part of hxfcgi.
+ *
+ *  hxfcgi is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as 
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  hxfcgi is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public 
+ *  License along with hxfcgi. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <fastcgi.h>
 #include <fcgi_stdio.h>
 #include <sstream>
@@ -5,7 +26,7 @@
 #include "data.h"
 
 namespace hxfcgi {
-	
+
 	Request::Request() {
 		header_sent = false;
 		post_fetched = false;
@@ -37,7 +58,7 @@ namespace hxfcgi {
 		*len = pos;
 	}
 
-	void Request::charBufferFill(char *buf,int *len) {
+	void Request::bufferFill(char *buf,int *len) {
 		Data d;
 		int pos = *len;
 		while( pos < BUFSIZE ) {
@@ -69,7 +90,7 @@ namespace hxfcgi {
 		header[type]=value;
 	}	
 
-	void Request::putchar(char c) {
+	void Request::pchar(char c) {
 		FCGI_putchar(c);
  	}
 

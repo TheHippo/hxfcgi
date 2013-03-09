@@ -1,7 +1,7 @@
 *.o
-*.ndll
 bin/*
 Readme.html
 ._*
 .DS_Store
 *.swp
+hxfcgi.zip

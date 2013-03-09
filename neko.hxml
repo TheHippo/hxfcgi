@@ -1,5 +1,5 @@
 -cp test
 -cp lib
--D HXFGCI
+-D HXFCGI
 -main Test
 -neko bin/test.n

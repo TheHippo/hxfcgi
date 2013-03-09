@@ -58,7 +58,7 @@ class Web {
 	public static var request:Dynamic = init();
 	
 	public static function init() {
-	haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
+		haxe.Log.trace = function(v:Dynamic,?info:haxe.PosInfos) {
 			Lib.print(info.fileName+":"+info.lineNumber+": "+Std.string(v)+"\n");
 		}
 		return Web.hxfcgi_createRequest();
@@ -75,7 +75,7 @@ class Web {
 		#end
 		var a:Array<String> = Lib.nekoToHaxe(Web.hxfcgi_getParams(Web.request));
 		for (x in 0...(a.length >> 1))
-			ret.set(a[2*x],StringTools.urlDecode(a[2*x+1]));
+			if(a[2*x].length > 0) ret.set(a[2*x],(a[2*x+1].length > 0 ) ? StringTools.urlDecode(a[2*x+1]) : null);
 		return ret;
 	}
 

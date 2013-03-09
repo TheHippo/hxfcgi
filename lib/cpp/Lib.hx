@@ -64,7 +64,7 @@ class Lib {
 		Print the specified value on the default output.
 	**/
 	public static function print( v : Dynamic ) : Void {
-		#if HXFGCI
+		#if (HXFCGI && !macro)
 		Web.hxfcgi_print(Web.request,Std.string(v));
 		#else
 		untyped __global__.__hxcpp_print(v);
@@ -75,7 +75,7 @@ class Lib {
 		Print the specified value on the default output followed by a newline character.
 	**/
 	public static function println( v : Dynamic ) : Void {
-		#if HXFGCI
+		#if (HXFCGI && !macro)
 		Web.hxfcgi_print(Web.request,Std.string(v)+"\n");
 		#else
 		untyped __global__.__hxcpp_println(v);
