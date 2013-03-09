@@ -7,5 +7,5 @@
     <tag v="fcgi"/>
     <tag v="fastcgi"/>
     <description>CGI/FastCGI Wrapper for nekoVM and the haxe cpp target</description>
-    <version name="0.1.2">small fixes for cachemodule, updated binaries</version>
+    <version name="0.1.3">macro fixes, haxe3 compatibility</version>
 </project>
