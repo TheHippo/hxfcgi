@@ -32,6 +32,12 @@ package cpp;
 using Lambda;
 using StringTools;
 
+#if haxe3
+typedef CHash = Map<String, String>;
+#else
+typedef CHash = Hash<String>;
+#end
+
 class Web {
 
 	
@@ -67,11 +73,7 @@ class Web {
 		Returns the GET and POST parameters.
 	**/
 	public static function getParams() {
-		#if haxe3
-		var ret = new Map<String,String>();
-		#else
-		var ret = new Hash<String>();
-		#end
+		var ret = new CHash();
 		var a:Array<String> = Web.hxfcgi_getParams(Web.request);
 		for (x in 0...(a.length >> 1))
 			if(a[2*x].length > 0) ret.set(a[2*x],(a[2*x+1].length > 0 ) ? StringTools.urlDecode(a[2*x+1]) : null);
@@ -202,16 +204,12 @@ class Web {
 	**/
 	public static function getCookies() {
 		var p:Array<Dynamic> = Web.hxfcgi_getCookies(Web.request);
-				#if haxe3
-                var h = new Map<String,String>();
-                #else
-                var h = new Hash<String>();
-                #end
-                while( p != null ) {
-                        h.set(p[0],p[1]);
-                        p = p[2];
-                }
-                return h;
+		var h = new CHash();
+		while( p != null ) {
+			h.set(p[0],p[1]);
+			p = p[2];
+		}
+		return h;
 	}
 
 
@@ -220,17 +218,20 @@ class Web {
 	**/
 	public static function setCookie( key : String, value : String, ?expire: Date, ?domain: String, ?path: String, ?secure: Bool ) {
 		var buf = new StringBuf();
-                buf.add(value);
-                if( expire != null ) addPair(buf, "expires=", DateTools.format(expire, "%a, %d-%b-%Y %H:%M:%S GMT"));
-                addPair(buf, "domain=", domain);
-                addPair(buf, "path=", path);
-                if( secure ) addPair(buf, "secure", "");
-                var v = buf.toString();
+		buf.add(value);
+		if( expire != null )
+			addPair(buf, "expires=", DateTools.format(expire, "%a, %d-%b-%Y %H:%M:%S GMT"));
+		addPair(buf, "domain=", domain);
+		addPair(buf, "path=", path);
+		if( secure ) 
+			addPair(buf, "secure", "");
+		var v = buf.toString();
 		Web.hxfcgi_setCookie(Web.request,key,v);
 	}
 
 	static function addPair( buf : StringBuf, name, value ) {
-		if( value == null ) return;
+		if( value == null )
+			return;
 		buf.add("; ");
 		buf.add(name);
 		buf.add(value);
@@ -280,13 +281,8 @@ class Web {
 		Get the multipart parameters as an hashtable. The data
 		cannot exceed the maximum size specified.
 	**/
-	#if haxe3
-	public static function getMultipart( maxSize : Int ) : Map<String,String> {
-		var h = new Map();
-	#else
-	public static function getMultipart( maxSize : Int ) : Hash<String> {
-		var h = new Hash();
-	#end
+	public static function getMultipart( maxSize : Int ) : CHash {
+		var h = new CHash();
 		var buf : haxe.io.BytesBuffer = null;
 		var curname = null;
 		parseMultipart(function(p,_) {
