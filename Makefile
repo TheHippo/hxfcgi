@@ -9,6 +9,8 @@ LDFLAGS = -lfcgi
 OUT = bin/hxfcgi.ndll
 OBJ = src/hxfcgi.o src/request.o src/basic.o src/data.o
 
+all: clean hxfcgi neko cpp
+
 hxfcgi: $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(OUT) $(LDFLAGS)
 	
@@ -19,7 +21,6 @@ clean:
 	rm -f $(OUT)
 	rm -f $(OBJ)
 
-all: clean hxfcgi neko
 
 neko:
 ifdef HXCPP_M64
@@ -28,7 +29,7 @@ else
 	haxe neko.hxml
 endif
 	nekotools boot bin/test.n
-	mv bin/test bin/test.fcgi
+	mv bin/test bin/test_neko.fcgi
 	
 cpp:
 ifdef HXCPP_M64
@@ -36,4 +37,4 @@ ifdef HXCPP_M64
 else
 	haxe cpp.hxml
 endif
-	mv bin/Test bin/test.fcgi
+	mv bin/Test bin/test_cpp.fcgi
