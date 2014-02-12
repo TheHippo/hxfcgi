@@ -1,0 +1,10 @@
+{
+  "name": "hxfcgi",
+  "license": "LGPL",
+  "tags" : ["neko","cpp","web","cgi","fcgi","fastcgi"],
+  "decription" : "CGI/FastCGI Wrapper for nekoVM and the haxe cpp target",
+  "version" : "0.1.3",
+  "releasenotes" : "macro fixes, haxe3 compatibility",
+  "contributors": ["TheHippo"],
+  "classPath" : "lib/"
+}
